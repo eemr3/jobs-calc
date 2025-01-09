@@ -20,3 +20,31 @@
 - daily_hours
 - total_hours
 - created_at
+
+JobsCalc/
+├── JobsCalc.sln  
+├── src/
+│ └── JobsCalc/  
+│ ├── Http/
+│ │ ├── Controllers/
+│ │ └── Dtos/
+│ ├── Domain/
+│ │ └── Entities/
+│ ├── Application/
+│ │ └── Services/
+│ ├── Infra/
+│ │ └── Database/
+│ │ ├── EntityFramework/
+│ │ │ └──Migrations/
+│ │ └──Repositories/
+│ ├── Program.cs
+│ ├── FinanceManager.csproj
+│ └── ...
+├── docs/  
+│ └── model.md
+├── .gitignore  
+├── README.md  
+├── .env.example
+├── .env
+├── docker-compose.yml
+└── Dockerfile
