@@ -78,7 +78,7 @@ public class CustomExceptionFilter : ExceptionFilterAttribute
     }
     else
     {
-      context.Result = new ObjectResult(new { message = "An unexpected error occurred." })
+      context.Result = new ObjectResult(context.Exception.Message)
       {
         StatusCode = 500
       };

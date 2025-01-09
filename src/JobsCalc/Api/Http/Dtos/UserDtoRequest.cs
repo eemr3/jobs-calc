@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using JobsCalc.Api.Application.Validators;
+using JobsCalc.Api.Domain.Validators;
 
 namespace JobsCalc.Api.Http.Dtos;
 

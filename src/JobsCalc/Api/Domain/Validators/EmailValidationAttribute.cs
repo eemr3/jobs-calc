@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace JobsCalc.Api.Application.Validators;
+namespace JobsCalc.Api.Domain.Validators;
 
 public class EmailValidationAttribute : ValidationAttribute
 {
