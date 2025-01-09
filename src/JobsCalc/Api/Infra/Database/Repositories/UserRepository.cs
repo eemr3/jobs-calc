@@ -33,6 +33,7 @@ public class UserRepository : IUserRepository
   {
     var user = await _context.Users.FirstOrDefaultAsync(usr => usr.Email.Equals(email));
     if (user is null) return null;
+
     return user;
   }
 

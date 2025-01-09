@@ -1,4 +1,5 @@
 using JobsCalc.Api.Application.Services.UserService;
+using JobsCalc.Api.Http.Filters;
 using JobsCalc.Api.Infra.Database.EntityFramework;
 using JobsCalc.Api.Infra.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add<CustomExceptionFilter>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
