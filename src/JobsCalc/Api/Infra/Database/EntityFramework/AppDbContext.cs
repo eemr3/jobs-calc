@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JobsCalc.Api.Infra.Database.EntityFramework;
 
-public class AppDbContext : DbContext
+public class AppDbContext : DbContext, IAppDbContext
 {
 
   public DbSet<User> Users { get; set; } = null!;
@@ -18,6 +18,7 @@ public class AppDbContext : DbContext
     {
       entity.ToTable("users");
       entity.HasKey(usr => usr.UserId);
+      entity.HasIndex(usr => usr.Email).IsUnique();
       entity.Property(usr => usr.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
       entity.HasOne(usr => usr.Planning)
@@ -59,6 +60,11 @@ public class AppDbContext : DbContext
     }
 
     base.OnModelCreating(modelBuilder);
+  }
+
+  public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+  {
+    return base.SaveChangesAsync(cancellationToken);
   }
 
   /// <summary>
