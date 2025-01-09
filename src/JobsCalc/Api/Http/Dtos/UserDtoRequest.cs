@@ -15,5 +15,4 @@ public class UserDtoRequest
   [StringLength(30, MinimumLength = 8, ErrorMessage = "A senha deve ter pelo menos 8 caracteres e no máximo 30")]
   [PasswordValidation(ErrorMessage = "A senha deve incluir pelo menos uma letra minúscula, uma maíuscula, um dígito e um caractere especial (@, $, !, %, *, ?, &).")]
   public string Password { get; set; } = null!;
-  public string? AvatarUrl { get; set; }
 }
