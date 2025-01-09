@@ -6,6 +6,11 @@ namespace JobsCalc.Api.Http.Filters;
 
 public class CustomExceptionFilter : ExceptionFilterAttribute
 {
+  private readonly ILogger<CustomExceptionFilter> _logger;
+  public CustomExceptionFilter(ILogger<CustomExceptionFilter> logger)
+  {
+    _logger = logger;
+  }
   public override void OnException(ExceptionContext context)
   {
     if (context.Exception is KeyNotFoundException keyNotFoundException)
@@ -78,6 +83,31 @@ public class CustomExceptionFilter : ExceptionFilterAttribute
     }
     else
     {
+      // Dados principais
+      var exception = context.Exception;
+      var request = context.HttpContext.Request;
+      var user = context.HttpContext.User?.Identity?.Name ?? "Anonymous";
+
+      _logger.LogError(exception,
+          "Unhandled Exception occurred.\n" +
+          "Message: {Message}\n" +
+          "Type: {Type}\n" +
+          "Stack Trace: {StackTrace}\n" +
+          "Timestamp: {Timestamp}\n" +
+          "Request Path: {RequestPath}\n" +
+          "HTTP Method: {HttpMethod}\n" +
+          "Query String: {QueryString}\n" +
+          "User: {User}",
+          exception.Message,
+          exception.GetType().FullName,
+          exception.StackTrace,
+          DateTime.UtcNow,
+          request.Path,
+          request.Method,
+          request.QueryString,
+          user
+      );
+
       context.Result = new ObjectResult(context.Exception.Message)
       {
         StatusCode = 500
