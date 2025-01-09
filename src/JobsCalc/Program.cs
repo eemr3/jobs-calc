@@ -1,3 +1,4 @@
+using JobsCalc.Api.Application.Services.AuthService;
 using JobsCalc.Api.Application.Services.UserService;
 using JobsCalc.Api.Http.Filters;
 using JobsCalc.Api.Infra.Database.EntityFramework;
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<IAppDbContext, AppDbContext>(options => options.Us
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthSevice, AuthService>();
 
 var app = builder.Build();
 
