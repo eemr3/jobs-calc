@@ -1,4 +1,7 @@
+using JobsCalc.Api.Application.Exceptions;
+using JobsCalc.Api.Application.Services.UserService;
 using JobsCalc.Api.Http.Dtos;
+using JobsCalc.Api.Infra.Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobsCalc.Api.Http.Controllers;
@@ -7,9 +10,26 @@ namespace JobsCalc.Api.Http.Controllers;
 [Route("api/v1/users")]
 public class UserController : ControllerBase
 {
-  [HttpPost]
-  public IActionResult AddUser([FromBody] UserDtoRequest user)
+  private readonly IUserService _service;
+
+  public UserController(IUserService service)
   {
-    return Created("", user);
+    _service = service;
+  }
+
+  [HttpPost]
+  public async Task<IActionResult> AddUser([FromBody] UserDtoRequest user)
+  {
+    try
+    {
+      var userCreated = await _service.AddUserAsync(user);
+
+      return Created("", userCreated);
+
+    }
+    catch (ConflictException ex)
+    {
+      return Conflict(new { message = ex.Message });
+    }
   }
 }
