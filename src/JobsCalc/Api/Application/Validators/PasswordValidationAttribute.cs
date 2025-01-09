@@ -3,15 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace JobsCalc.Api.Application.Validators;
 
-public class EmailValidationAttribute : ValidationAttribute
+public class PasswordValidationAttribute : ValidationAttribute
 {
-
   public override bool IsValid(object? value)
   {
     if (value == null) return false;
 
-    var email = value?.ToString()!;
+    var password = value.ToString()!;
 
-    return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+    return Regex.IsMatch(password, @"((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$");
   }
 }
