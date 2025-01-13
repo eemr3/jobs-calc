@@ -41,6 +41,19 @@ public class UserService : IUserService
     };
   }
 
+  public async Task<UserDtoResponse> GetUserByEmail(string email)
+  {
+    var user = await _userRepository.GetUserByEmail(email);
+    if (user is null) throw new KeyNotFoundException("User not found.");
+
+    return new UserDtoResponse
+    {
+      UserId = user.UserId,
+      FullName = user.FullName,
+      Email = user.Email,
+      AvatarUrl = user.AvatarUrl
+    };
+  }
   public Task DeleteUser(int id)
   {
     throw new NotImplementedException();
