@@ -12,6 +12,7 @@ public class Planning
   public int? VacationPerYear { get; set; }
   public decimal ValueHour { get; set; }
   public int? UserId { get; set; }
+
   [JsonIgnore]
   public virtual User? User { get; set; }
 }
