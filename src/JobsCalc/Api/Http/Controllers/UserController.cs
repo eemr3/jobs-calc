@@ -1,8 +1,8 @@
-using JobsCalc.Api.Application.Exceptions;
+using System.Security.Claims;
 using JobsCalc.Api.Application.Services.UserService;
 using JobsCalc.Api.Http.Dtos;
 using JobsCalc.Api.Http.Filters;
-using JobsCalc.Api.Infra.Database.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobsCalc.Api.Http.Controllers;
@@ -26,5 +26,17 @@ public class UserController : ControllerBase
     var userCreated = await _service.AddUserAsync(user);
 
     return Created("", userCreated);
+  }
+
+  [HttpGet("me")]
+  [Authorize]
+  public async Task<IActionResult> GetMe()
+  {
+    var token = HttpContext.User.Identity as ClaimsIdentity;
+    var email = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+
+    var user = await _service.GetUserByEmail(email!);
+
+    return Ok(user);
   }
 }
