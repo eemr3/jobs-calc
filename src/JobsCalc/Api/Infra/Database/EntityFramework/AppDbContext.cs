@@ -62,11 +62,6 @@ public class AppDbContext : DbContext, IAppDbContext
     base.OnModelCreating(modelBuilder);
   }
 
-  public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-  {
-    return base.SaveChangesAsync(cancellationToken);
-  }
-
   /// <summary>
   /// Converte um nome de string para snake_case.
   /// </summary>
