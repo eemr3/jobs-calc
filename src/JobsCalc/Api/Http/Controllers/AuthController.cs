@@ -18,10 +18,10 @@ public class AuthController : ControllerBase
   }
 
   [HttpPost("login")]
-  public async Task<IActionResult> Login([FromBody] LoginRequest login)
+  public async Task<IActionResult> Login([FromBody] LoginDtoRequest login)
   {
-    var result = await _authSevice.SigIn(login);
+    var token = await _authSevice.SignIn(login);
 
-    return Ok(new { access_token = result.Token });
+    return Ok(new { access_token = token });
   }
 }

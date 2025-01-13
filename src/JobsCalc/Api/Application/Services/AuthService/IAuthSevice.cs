@@ -4,5 +4,5 @@ namespace JobsCalc.Api.Application.Services.AuthService;
 
 public interface IAuthSevice
 {
-  Task<LoginResponse> SigIn(LoginRequest login);
+  Task<string> SignIn(LoginDtoRequest login);
 }

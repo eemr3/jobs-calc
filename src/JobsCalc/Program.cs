@@ -1,5 +1,6 @@
 using System.Text;
 using JobsCalc.Api.Application.Services.AuthService;
+using JobsCalc.Api.Application.Services.PlanningService;
 using JobsCalc.Api.Application.Services.UserService;
 using JobsCalc.Api.Http.Filters;
 using JobsCalc.Api.Infra.Database.EntityFramework;
@@ -23,6 +24,8 @@ builder.Services.AddDbContext<IAppDbContext, AppDbContext>(options => options.Us
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthSevice, AuthService>();
+builder.Services.AddScoped<IPlanningRepository, PlanningRepository>();
+builder.Services.AddScoped<IPlanningService, PlanningService>();
 
 var secretKey = builder.Configuration["JwtSettings:SecretKey"];
 if (string.IsNullOrEmpty(secretKey))

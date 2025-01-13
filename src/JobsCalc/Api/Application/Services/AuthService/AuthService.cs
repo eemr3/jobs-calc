@@ -1,4 +1,3 @@
-using JobsCalc.Api.Application.Services.AuthService;
 using JobsCalc.Api.Application.Services.JWT;
 using JobsCalc.Api.Http.Dtos;
 using JobsCalc.Api.Infra.Database.Repositories;
@@ -14,7 +13,7 @@ public class AuthService : IAuthSevice
     _userRepository = repository;
     tokenGenerator = new TokenGenerator(configuration);
   }
-  public async Task<LoginResponse> SigIn(LoginRequest login)
+  public async Task<string> SignIn(LoginDtoRequest login)
   {
     var user = await _userRepository.GetUserByEmail(login.Email!);
     if (user is null) throw new UnauthorizedAccessException("Email address or password provided is incorrect.");
@@ -26,9 +25,6 @@ public class AuthService : IAuthSevice
 
     var token = tokenGenerator.Generator(user);
 
-    return new LoginResponse
-    {
-      Token = token
-    };
+    return token;
   }
 }
