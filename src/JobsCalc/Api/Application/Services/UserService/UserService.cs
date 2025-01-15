@@ -64,8 +64,18 @@ public class UserService : IUserService
     throw new NotImplementedException();
   }
 
-  public Task<UserDtoResponse> UpdateUserAsync(UserDtoRequest user)
+  public async Task<UserDtoResponse> UpdateUserAsync(int userId, UserPatchDto user)
   {
-    throw new NotImplementedException();
+    var userUpdated = await _userRepository.UpdateUser(userId, user);
+
+    if (userUpdated is null) throw new KeyNotFoundException($"User with ID {userId} not found.");
+
+    return new UserDtoResponse
+    {
+      UserId = userUpdated.UserId,
+      FullName = userUpdated.FullName,
+      Email = userUpdated.Email,
+      AvatarUrl = userUpdated.AvatarUrl
+    };
   }
 }

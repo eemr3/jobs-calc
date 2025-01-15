@@ -8,7 +8,6 @@ namespace JobsCalc.Api.Application.Services.PlanningService;
 public class PlanningService : IPlanningService
 {
   private readonly IPlanningRepository _repository;
-  private readonly int weeksPerYear = 52;
 
   public PlanningService(IPlanningRepository repository)
   {
