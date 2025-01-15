@@ -482,3 +482,7 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+src/JobsCalc/upload/avatar/*.jpg
+src/JobsCalc/upload/avatar/*.jpeg
+src/JobsCalc/upload/avatar/*.png
