@@ -25,9 +25,13 @@ public class UserRepository : IUserRepository
     return userCreated;
   }
 
-  public Task<User?> GetUserById(int userId)
+  public async Task<User?> GetUserById(int userId)
   {
-    throw new NotImplementedException();
+    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId.Equals(userId));
+
+    if (user is null) return null;
+
+    return user;
   }
   public async Task<User?> GetUserByEmail(string email)
   {
@@ -37,9 +41,55 @@ public class UserRepository : IUserRepository
     return user;
   }
 
-  public Task<User> UpdateUser(User user)
+  // public async Task<User?> UpdateUser(User user)
+  // {
+  //   var userExists = await _context.Users.FirstOrDefaultAsync(u => user.UserId.Equals(user.UserId));
+  //   if (userExists is null) return null;
+
+  //   userExists.FullName = user.FullName;
+  //   userExists.Email = user.Email;
+  //   userExists.AvatarUrl = user.AvatarUrl;
+  //   userExists.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+
+  //   _context.Users.Update(userExists);
+  //   await _context.SaveChangesAsync();
+
+  //   return user;
+  // }
+
+  public async Task<User?> UpdateUser(int userId, UserPatchDto user)
   {
-    throw new NotImplementedException();
+    var userExists = await _context.Users.FirstOrDefaultAsync(u => u.UserId.Equals(userId));
+    if (userExists is null) return null;
+
+    // Atualize apenas os campos necessários
+    if (!string.IsNullOrEmpty(user.FullName) && userExists.FullName != user.FullName)
+    {
+      userExists.FullName = user.FullName;
+    }
+
+    if (!string.IsNullOrEmpty(user.Email) && userExists.Email != user.Email)
+    {
+      // Verifique se há outro usuário com o mesmo email
+      var emailInUse = await _context.Users.AnyAsync(u => u.Email == user.Email && u.UserId != userId);
+      if (emailInUse) throw new ConflictException("Email already in use by another user.");
+      userExists.Email = user.Email;
+    }
+
+    if (!string.IsNullOrEmpty(user.AvatarUrl) && userExists.AvatarUrl != user.AvatarUrl)
+    {
+      userExists.AvatarUrl = user.AvatarUrl;
+    }
+
+    if (!string.IsNullOrEmpty(user.Password))
+    {
+      userExists.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+    }
+
+    _context.Users.Update(userExists);
+    await _context.SaveChangesAsync();
+
+    return userExists;
   }
 
   public Task DeleteUser(int userId)
