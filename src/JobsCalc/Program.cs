@@ -5,8 +5,10 @@ using JobsCalc.Api.Application.Services.UserService;
 using JobsCalc.Api.Http.Filters;
 using JobsCalc.Api.Infra.Database.EntityFramework;
 using JobsCalc.Api.Infra.Database.Repositories;
+using JobsCalc.Api.Infra.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthSevice, AuthService>();
 builder.Services.AddScoped<IPlanningRepository, PlanningRepository>();
 builder.Services.AddScoped<IPlanningService, PlanningService>();
+builder.Services.AddScoped<IUploadService, UploadService>();
 
 var secretKey = builder.Configuration["JwtSettings:SecretKey"];
 if (string.IsNullOrEmpty(secretKey))
@@ -58,6 +61,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "upload", "avatar")),
+    RequestPath = "/upload/avatar"
+});
 
 app.UseHttpsRedirection();
 
