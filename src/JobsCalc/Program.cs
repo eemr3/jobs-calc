@@ -1,8 +1,10 @@
 using System.Text;
 using JobsCalc.Api.Application.Services.AuthService;
+using JobsCalc.Api.Application.Services.JobService;
 using JobsCalc.Api.Application.Services.PlanningService;
 using JobsCalc.Api.Application.Services.UserService;
 using JobsCalc.Api.Http.Filters;
+using JobsCalc.Api.Http.Middleware;
 using JobsCalc.Api.Infra.Database.EntityFramework;
 using JobsCalc.Api.Infra.Database.Repositories;
 using JobsCalc.Api.Infra.Services;
@@ -28,6 +30,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthSevice, AuthService>();
 builder.Services.AddScoped<IPlanningRepository, PlanningRepository>();
 builder.Services.AddScoped<IPlanningService, PlanningService>();
+builder.Services.AddScoped<IJobRepository, JobRepository>();
+builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<IUploadService, UploadService>();
 
 var secretKey = builder.Configuration["JwtSettings:SecretKey"];
@@ -53,7 +57,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
 var app = builder.Build();
+
+app.UseMiddleware<UnauthorizedResponseMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
