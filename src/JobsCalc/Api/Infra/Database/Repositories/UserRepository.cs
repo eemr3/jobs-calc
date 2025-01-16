@@ -41,22 +41,6 @@ public class UserRepository : IUserRepository
     return user;
   }
 
-  // public async Task<User?> UpdateUser(User user)
-  // {
-  //   var userExists = await _context.Users.FirstOrDefaultAsync(u => user.UserId.Equals(user.UserId));
-  //   if (userExists is null) return null;
-
-  //   userExists.FullName = user.FullName;
-  //   userExists.Email = user.Email;
-  //   userExists.AvatarUrl = user.AvatarUrl;
-  //   userExists.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
-
-  //   _context.Users.Update(userExists);
-  //   await _context.SaveChangesAsync();
-
-  //   return user;
-  // }
-
   public async Task<User?> UpdateUser(int userId, UserPatchDto user)
   {
     var userExists = await _context.Users.FirstOrDefaultAsync(u => u.UserId.Equals(userId));

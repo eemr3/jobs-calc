@@ -1,5 +1,7 @@
+using JobsCalc.Api.Domain.Entities;
+
 namespace JobsCalc.Api.Application.Utils;
-public class WorkHourCalculator
+public class JobUtils
 {
   private static readonly int weeksPerYear = 52;
   public static decimal CalculateHourlyRate(decimal monthlyBudget, int vacationPerYear, int hoursPerDay, int daysPerWeek)
@@ -17,6 +19,23 @@ public class WorkHourCalculator
     var hourlyRate = monthlyBudget / monthlyTotalHours;
 
     return decimal.Round(hourlyRate, 2); // Arredonda o valor para 2 casas decimais
+  }
+
+  public static int RemainingDays(int totoalHours, int daylyHours, Job job)
+  {
+    int remainingDays = totoalHours / daylyHours;
+    DateTime dueDate = job.CreatedAt.AddDays(remainingDays);
+
+    TimeSpan timeDiff = dueDate - DateTime.Now;
+
+    int dayDiff = (int)Math.Ceiling(timeDiff.TotalDays);
+
+    return dayDiff;
+  }
+
+  public static decimal CalculateBudget(int totalHours, decimal valueHour)
+  {
+    return valueHour * totalHours;
   }
 }
 

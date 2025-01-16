@@ -16,7 +16,7 @@ public class PlanningService : IPlanningService
 
   public async Task<Planning> AddPlanningAsync(PlanningDtoRequest planningDto)
   {
-    decimal valueHour = WorkHourCalculator.CalculateHourlyRate(
+    decimal valueHour = JobUtils.CalculateHourlyRate(
       planningDto.MonthlyBudget,
       planningDto.VacationPerYear ?? 0,
       planningDto.HoursPerDay,
@@ -49,7 +49,7 @@ public class PlanningService : IPlanningService
   public async Task<Planning> UpdatePlanningAsync(PlanningUpdateDto planningDto)
   {
 
-    decimal valueHour = WorkHourCalculator.CalculateHourlyRate(
+    decimal valueHour = JobUtils.CalculateHourlyRate(
       planningDto.MonthlyBudget,
       planningDto.VacationPerYear ?? 0,
       planningDto.HoursPerDay,
