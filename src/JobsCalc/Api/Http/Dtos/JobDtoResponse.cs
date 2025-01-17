@@ -8,5 +8,6 @@ public class JobDtoResponse
   public int TotalHours { get; set; }
   public int RemainingDays { get; set; }
   public decimal ValueJob { get; set; }
+  public bool Status { get; set; }
   public int UserId { get; set; }
 }

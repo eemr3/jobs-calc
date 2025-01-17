@@ -50,12 +50,14 @@ public class JobService : IJobService
 
     foreach (var job in jobs)
     {
+      var remaining = JobUtils.RemainingDays(job.TotalHours, job.DailyHours, job);
       resultJobs.Add(new JobDtoResponse
       {
         JobId = job.JobId,
         Name = job.Name!,
-        RemainingDays = JobUtils.RemainingDays(job.TotalHours, job.DailyHours, job),
+        RemainingDays = remaining,
         ValueJob = JobUtils.CalculateBudget(job.TotalHours, planning.ValueHour),
+        Status = remaining <= 0 ? false : true,
         UserId = job.UserId!.Value
       });
     }
