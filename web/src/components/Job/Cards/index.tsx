@@ -3,17 +3,25 @@ import React from 'react';
 import { formatCurrency } from '../../../Utils/formatCurrency';
 
 interface CardsProps {
-  id?: number;
+  jobId?: string;
   name: string;
   remainingDays: number;
+  valueJob: number;
   status: boolean;
-  totalValue: number;
+  userId?: number;
+
+  // dailyHours: 0,
+  // totalHours: 0,
+  // remainingDays: 17,
+  // valueJob: 2100.24,
+  // status: true,
+  // userId: 35
 }
-export function Cards({ name, remainingDays, status, totalValue }: CardsProps) {
+export function Cards({ name, remainingDays, status, valueJob }: CardsProps) {
   return (
     <div
       className={`border border-gray-200 
-  grid grid-cols-[35%_20%_15%_20%_10%] items-center 
+  grid grid-cols-[40%_18%_15%_20%_10%] items-center 
   py-6 px-8 
   rounded
   bg-white
@@ -32,8 +40,8 @@ export function Cards({ name, remainingDays, status, totalValue }: CardsProps) {
   hover:before:h-full
 `}
     >
-      <div className="name column text-2xl text-gray-700 font-bold">{name}</div>
-      <div className="deadline column grid">
+      <div className="text-[1.2rem] text-gray-700 font-bold">{name}</div>
+      <div className="grid">
         <span className="font-bold text-gray-400 uppercase text-xs">Prazo</span>
 
         {status === true && remainingDays > 0 ? (
@@ -48,7 +56,7 @@ export function Cards({ name, remainingDays, status, totalValue }: CardsProps) {
       </div>
       <div className="column grid">
         <span className="font-bold text-gray-400 uppercase text-xs">Valor</span>
-        <strong className="text-gray-700">{formatCurrency(totalValue)}</strong>
+        <strong className="text-gray-700">{formatCurrency(valueJob)}</strong>
       </div>
       <div
         className={`status badge column bg-gray-300 px-3 py-2 rounded-full w-fit justify-self-center text-sm ${

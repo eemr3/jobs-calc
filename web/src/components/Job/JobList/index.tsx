@@ -5,11 +5,12 @@ interface jobListProps {
 }
 
 type Job = {
-  id: number;
+  jobId?: string;
   name: string;
   remainingDays: number;
+  valueJob: number;
   status: boolean;
-  totalValue: number;
+  userId?: number;
 };
 
 export function JobList({ jobs }: jobListProps) {
@@ -17,11 +18,11 @@ export function JobList({ jobs }: jobListProps) {
     <div className="py-6 space-y-2">
       {jobs.map((job) => (
         <Cards
-          key={job.id}
+          key={job.jobId}
           name={job.name}
           remainingDays={job.remainingDays}
           status={job.status}
-          totalValue={job.totalValue}
+          valueJob={job.valueJob}
         />
       ))}
     </div>
