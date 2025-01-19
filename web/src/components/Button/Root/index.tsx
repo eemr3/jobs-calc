@@ -1,11 +1,12 @@
 'use client';
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 
-interface RootProps {
-  children: React.ReactNode;
-  className: string;
-}
+type RootProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
-export function Root({ children, className }: RootProps) {
-  return <button className={className}>{children}</button>;
+export function Root({ children, className, ...props }: RootProps) {
+  return (
+    <button {...props} className={className}>
+      {children}
+    </button>
+  );
 }
