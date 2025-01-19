@@ -55,6 +55,8 @@ public class JobService : IJobService
       {
         JobId = job.JobId,
         Name = job.Name!,
+        DailyHours = job.DailyHours,
+        TotalHours = job.TotalHours,
         RemainingDays = remaining,
         ValueJob = JobUtils.CalculateBudget(job.TotalHours, planning.ValueHour),
         Status = remaining <= 0 ? false : true,
