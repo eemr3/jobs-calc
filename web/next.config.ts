@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'avatars.githubusercontent.com',
         port: '',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5043',
+      },
     ],
   },
 };
