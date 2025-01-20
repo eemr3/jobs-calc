@@ -22,9 +22,14 @@ public class JobRepository : IJobRepository
     return jobAdd.Entity;
   }
 
-  public async Task<Job?> GetJob(int jobId)
+  public async Task<Job?> GetJob(string jobId)
   {
-    var job = await _context.Jobs.FirstOrDefaultAsync(c => c.JobId.Equals(jobId));
+    if (!Guid.TryParse(jobId, out var jobGuid))
+    {
+      throw new ArgumentException($"Invalid Job ID format: {jobId}");
+    }
+
+    var job = await _context.Jobs.FirstOrDefaultAsync(c => c.JobId.Equals(jobGuid));
     if (job is null) return null;
 
     return job;
@@ -37,10 +42,14 @@ public class JobRepository : IJobRepository
     return jobs;
   }
 
-  public async Task<Job> UpdateJob(int jobId, JobPatchDto jobPatch)
+  public async Task<Job> UpdateJob(string jobId, JobPatchDto jobPatch)
   {
-    var jobExists = await _context.Jobs.FirstOrDefaultAsync(jb => jb.JobId.Equals(jobId));
-    if (jobExists is null) throw new KeyNotFoundException($"JOb with ID {jobId} not found");
+    if (!Guid.TryParse(jobId, out var jobGuid))
+    {
+      throw new ArgumentException($"Invalid Job ID format: {jobId}");
+    }
+    var jobExists = await _context.Jobs.FirstOrDefaultAsync(jb => jb.JobId.Equals(jobGuid));
+    if (jobExists is null) throw new KeyNotFoundException($"Job with ID {jobId} not found");
 
     if (!string.IsNullOrEmpty(jobPatch.Name))
     {
@@ -62,9 +71,13 @@ public class JobRepository : IJobRepository
     return jobExists;
   }
 
-  public async Task DeleteJob(int jobId)
+  public async Task DeleteJob(string jobId)
   {
-    var job = await _context.Jobs.FirstOrDefaultAsync(jb => jb.JobId.Equals(jobId));
+    if (!Guid.TryParse(jobId, out var jobGuid))
+    {
+      throw new ArgumentException($"Invalid Job ID format: {jobId}");
+    }
+    var job = await _context.Jobs.FirstOrDefaultAsync(jb => jb.JobId.Equals(jobGuid));
     if (job is null) throw new KeyNotFoundException($"JOb with ID {jobId} not found");
 
     _context.Jobs.Remove(job);
