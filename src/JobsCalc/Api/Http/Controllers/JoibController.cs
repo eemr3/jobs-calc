@@ -42,4 +42,31 @@ public class JoibController : ControllerBase
 
     return Ok(jobs);
   }
+
+  [HttpGet("{jobId}")]
+  [Authorize]
+  public async Task<IActionResult> GetJobById(string jobId)
+  {
+    var job = await _servece.GetJob(jobId);
+
+    return Ok(job);
+  }
+
+  [HttpPut("{jobId}")]
+  [Authorize]
+  public async Task<IActionResult> UpdateJob(string jobId, [FromBody] JobPatchDto jobDto)
+  {
+    var job = await _servece.UpdateJob(jobId, jobDto);
+
+    return Ok(job);
+  }
+
+  [HttpDelete("{jobId}")]
+  [Authorize]
+  public async Task<IActionResult> DeleteJob(string jobId)
+  {
+    await _servece.DeleteJob(jobId);
+
+    return NoContent();
+  }
 }
