@@ -29,7 +29,7 @@ public class JobService : IJobService
     return await _jobRepository.AddJobAsync(newJob);
   }
 
-  public async Task<Job?> GetJob(int jobId)
+  public async Task<Job?> GetJob(string jobId)
   {
     var job = await _jobRepository.GetJob(jobId);
     if (job is null) throw new KeyNotFoundException($"Job with ID {jobId} not found");
@@ -67,12 +67,12 @@ public class JobService : IJobService
     return resultJobs;
   }
 
-  public async Task<Job> UpdateJob(int jobId, JobPatchDto jobPatch)
+  public async Task<Job> UpdateJob(string jobId, JobPatchDto jobPatch)
   {
     return await _jobRepository.UpdateJob(jobId, jobPatch);
   }
 
-  public async Task DeleteJob(int jobId)
+  public async Task DeleteJob(string jobId)
   {
     await _jobRepository.DeleteJob(jobId);
   }

@@ -7,7 +7,7 @@ public interface IJobService
 {
   public Task<Job> AddJobAsync(int userId, JobDtoRequest job);
   public Task<IEnumerable<JobDtoResponse>?> GetJobsUser(int userId);
-  public Task<Job?> GetJob(int jobId);
-  public Task<Job> UpdateJob(int jobId, JobPatchDto jobPatch);
-  public Task DeleteJob(int jobId);
+  public Task<Job?> GetJob(string jobId);
+  public Task<Job> UpdateJob(string jobId, JobPatchDto jobPatch);
+  public Task DeleteJob(string jobId);
 }
