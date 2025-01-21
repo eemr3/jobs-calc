@@ -28,7 +28,7 @@ public class JobUtils
 
     TimeSpan timeDiff = dueDate - DateTime.Now;
 
-    int dayDiff = (int)Math.Ceiling(timeDiff.TotalDays);
+    int dayDiff = (int)Math.Floor(timeDiff.TotalDays);
 
     return dayDiff;
   }
