@@ -10,9 +10,11 @@ import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { Icon } from '../../Button/Icon';
 import { useRouter } from 'next/navigation';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/16/solid';
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const {
@@ -48,14 +50,19 @@ export default function LoginForm() {
               className="block text-sm/6 font-medium text-[#FEFCFD]"
               text="Endereço de email"
             />
-            <Input.Action
-              {...register('email')}
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              className="block w-full rounded-md bg-[#FEFDFC] px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-orange-400 sm:text-sm/6"
-              helperText={errors.email?.message}
+            <Input.Content>
+              <Input.Action
+                {...register('email')}
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                className="block w-full rounded-md bg-[#FEFDFC] px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-orange-400 sm:text-sm/6"
+              />
+            </Input.Content>
+            <Input.HelpText
+              helpText={errors?.email?.message}
+              className="mt-2 text-orange-500"
             />
           </Input.Root>
 
@@ -75,14 +82,20 @@ export default function LoginForm() {
                 </a>
               </div>
             </div>
-            <Input.Action
-              {...register('password')}
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              className="block w-full rounded-md bg-[#FEFDFC] px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-orange-400 sm:text-sm/6"
-              helperText={errors.password?.message}
+            <Input.Content>
+              <Input.Action
+                {...register('password')}
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                className="block w-full rounded-md bg-[#FEFDFC] px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-orange-400 sm:text-sm/6"
+              />
+              <Input.Eye setShowPassword={setShowPassword} showPassword={showPassword} />
+            </Input.Content>
+            <Input.HelpText
+              helpText={errors.password?.message}
+              className="mt-2 text-orange-500"
             />
           </Input.Root>
         </div>
