@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { RegisterForm } from '../../components/Forms/RegisterForm';
 
 export default function Register() {
   return (
@@ -13,8 +13,8 @@ export default function Register() {
             Criar sua conta
           </h2>
         </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <RegisterForm />
+        {/* <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form action="#" method="POST" className="space-y-6">
             <div>
               <label
@@ -110,7 +110,7 @@ export default function Register() {
               Entar
             </Link>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
