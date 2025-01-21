@@ -19,6 +19,7 @@ export function JobList({ jobs }: jobListProps) {
       {jobs.map((job) => (
         <Cards
           key={job.jobId}
+          jobId={job.jobId}
           name={job.name}
           remainingDays={job.remainingDays}
           status={job.status}

@@ -1,6 +1,8 @@
+'use client';
 import Image from 'next/image';
 import React from 'react';
 import { formatCurrency } from '../../../Utils/formatCurrency';
+import { useRouter } from 'next/navigation';
 
 interface CardsProps {
   jobId?: string;
@@ -9,15 +11,10 @@ interface CardsProps {
   valueJob: number;
   status: boolean;
   userId?: number;
-
-  // dailyHours: 0,
-  // totalHours: 0,
-  // remainingDays: 17,
-  // valueJob: 2100.24,
-  // status: true,
-  // userId: 35
 }
-export function Cards({ name, remainingDays, status, valueJob }: CardsProps) {
+
+export function Cards({ jobId, name, remainingDays, status, valueJob }: CardsProps) {
+  const route = useRouter();
   return (
     <div
       className={`border border-gray-200 
@@ -74,10 +71,11 @@ export function Cards({ name, remainingDays, status, valueJob }: CardsProps) {
         <button
           className="border border-gray-200 p-2 rounded hover:bg-gray-100 transition-all"
           title="Editar Job"
+          onClick={() => route.push(`/project/${jobId}`)}
         >
           <Image
             className="w-5"
-            src="./images/edit-24.svg"
+            src="/images/edit-24.svg"
             alt="Editar Job"
             width={20}
             height={20}
@@ -89,7 +87,7 @@ export function Cards({ name, remainingDays, status, valueJob }: CardsProps) {
         >
           <Image
             className="w-5"
-            src="./images/trash-24.svg"
+            src="/images/trash-24.svg"
             alt="Excluir Job"
             width={20}
             height={20}

@@ -1,21 +1,42 @@
+import { cookies } from 'next/headers';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Avatar } from '../../components/Avatar';
-import { Button } from '../../components/Button';
 import { Icon } from '../../components/Button/Icon';
 import { Header } from '../../components/Header';
 import { JobList } from '../../components/Job/JobList';
-import { jobs } from '../../service/data/jobsMok';
-import { getProfile } from '../../service/api/requests';
-
+const baseUrl = 'http://localhost:5043/api/v1';
 export default async function Dashboard() {
+  const token = (await cookies()).get('access_token');
   async function fetchProfile() {
     'use server';
-    const response = await getProfile();
+
+    const response = await fetch(`${baseUrl}/users/me`, {
+      headers: {
+        authorization: `Bearer ${token?.value}`,
+      },
+    });
     if (response.status === 401) return { message: 'erro' };
-    return response;
+
+    const result = await response.json();
+    return result;
+  }
+
+  async function fetchJobs() {
+    'use server';
+
+    const response = await fetch(`${baseUrl}/jobs`, {
+      headers: {
+        authorization: `Bearer ${token?.value}`,
+      },
+    });
+
+    const result = await response.json();
+    return result;
   }
 
   const user = await fetchProfile();
+  const jobs = await fetchJobs();
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -25,7 +46,7 @@ export default async function Dashboard() {
             <Header.Logo width={208} height={48} />
             <span className="flex gap-2">
               <Image
-                src="./images/alert-octagon.svg"
+                src="/images/alert-octagon.svg"
                 alt="Alerta"
                 width={20}
                 height={20}
@@ -53,7 +74,8 @@ export default async function Dashboard() {
                 text="Encerrados"
               />
             </div>
-            <Button.Root
+            <Link
+              href="/project/new"
               className="uppercase flex gap-4 bg-orange-400 h-fit px-3 py-2 
                 rounded items-center hover:brightness-110 transition-al text-[#FCFDFF]"
             >
@@ -61,7 +83,7 @@ export default async function Dashboard() {
                 <Icon.Plus24 height={24} width={24} />
               </span>
               <p className="px-2 text-xs font-bold">Adicionar novo job</p>
-            </Button.Root>
+            </Link>
           </Header.Summary>
         </Header.Content>
       </Header.Root>

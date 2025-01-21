@@ -7,11 +7,6 @@ interface LogoProps {
 
 export const Logo = ({ height, width }: LogoProps) => {
   return (
-    <Image
-      src="./images/logo.svg"
-      width={width}
-      height={height}
-      alt="logo da aplicação"
-    />
+    <Image src="/images/logo.svg" width={width} height={height} alt="logo da aplicação" />
   );
 };

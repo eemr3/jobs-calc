@@ -1,7 +1,10 @@
-import type { Metadata } from 'next';
+'use client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
 import { Toaster } from 'react-hot-toast';
+import './globals.css';
+import { AppProvider } from '../context/AppContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -13,22 +16,31 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'JobsCalc',
-  description: 'Calculadora para freelancer',
-  icons: './images/favicon.png',
-};
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const metadata = {
+    title: 'JobsCalc',
+    description: 'Calculadora para freelancer',
+    icons: '/images/favicon.png',
+  };
   return (
     <html lang="pt-br">
+      <head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <link rel="icon" href={metadata.icons} />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Toaster position="top-right" reverseOrder={false} />
-        {children}
+        <QueryClientProvider client={queryClient}>
+          <Toaster position="top-right" reverseOrder={false} />
+          {children}
+          <AppProvider>{children}</AppProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
