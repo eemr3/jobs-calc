@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { cookies } from 'next/headers';
+import { getCookie } from 'cookies-next/client';
 
 export const apiClient = axios.create({
   baseURL: 'http://localhost:5043/api/v1',
@@ -8,10 +8,10 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   async (config) => {
-    const token = (await cookies()).get('access_token'); // Recupera o token do cookie
+    const token = getCookie('access_token'); // Recupera o token do cookie
 
     if (token) {
-      config.headers.Authorization = `Bearer ${token.value}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
