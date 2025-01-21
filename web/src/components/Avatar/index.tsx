@@ -1,8 +1,9 @@
 'use client';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { deleteCookie, getCookie } from 'cookies-next';
+import { deleteCookie } from 'cookies-next';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
+import { LetterAvatar } from '../LetterAvatar';
 
 type UserProps = {
   user: User;
@@ -29,13 +30,30 @@ export function Avatar({ user }: UserProps) {
           <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
             <span className="absolute -inset-1.5" />
             <span className="sr-only">Abrir menu</span>
-            <Image
+            {user.avatarUrl ? (
+              <Image
+                alt=""
+                src={`http://localhost:5043${user.avatarUrl}`}
+                className="size-14 rounded-full"
+                width={56}
+                height={56}
+              />
+            ) : (
+              <LetterAvatar fullName={user.fullName} />
+            )}
+            {/* 
+              <Image
               alt=""
-              src={`http://localhost:5043${user.avatarUrl}`}
+              src={
+                user.avatarUrl
+                  ? `http://localhost:5043${user.avatarUrl}`
+                  : '/images/avatar.png'
+              }
               className="size-14 rounded-full"
               width={56}
               height={56}
             />
+             */}
           </MenuButton>
         </div>
         <MenuItems
