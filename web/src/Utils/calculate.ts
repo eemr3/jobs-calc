@@ -23,5 +23,14 @@ export function calculateFreeHours(jobs: Jobs[], planning: Planning) {
     return curr.status ? acc + curr.dailyHours : acc;
   }, 0);
 
-  return planning.hoursPerDay - totalHours;
+  const value = planning.hoursPerDay - totalHours;
+  return value > 0 ? value : 0;
+}
+
+export function countProjects(jobs: Jobs[]) {
+  const totalTjobs = jobs.length;
+  const jobsDone = jobs.filter((job) => job.status === true).length;
+  const jobsfinish = jobs.filter((job) => job.status === false).length;
+
+  return { totalTjobs, jobsDone, jobsfinish };
 }
