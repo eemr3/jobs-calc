@@ -15,6 +15,15 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMyOrigin", p =>
+    {
+        p.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 // Add services to the container.
 
 builder.Services.AddControllers(options => options.Filters.Add<CustomExceptionFilter>());
@@ -79,7 +88,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowMyOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 
