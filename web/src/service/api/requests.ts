@@ -21,10 +21,16 @@ type UpdateJobData = {
 };
 
 export async function createUser(user: User) {
-  const response = await apiClient.post('/users', user);
-  const data = await response.data;
+  try {
+    const response = await apiClient.post('/users', user);
+    const data = await response.data;
 
-  return data;
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return error;
+    }
+  }
 }
 
 export async function getProfile() {

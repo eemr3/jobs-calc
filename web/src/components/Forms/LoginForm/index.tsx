@@ -2,15 +2,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useId, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { DataProps, schema } from '../../../Utils/zod-schema';
 import { Button } from '../../Button';
-import { Input } from '../../Input';
 import { Icon } from '../../Button/Icon';
-import { useRouter } from 'next/navigation';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/16/solid';
+import { Input } from '../../Input';
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);

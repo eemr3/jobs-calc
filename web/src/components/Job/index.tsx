@@ -68,10 +68,9 @@ export function JobMain({ jobsData, planningData, user }: JobMainProps) {
                 width={20}
                 height={20}
               />
-              {`você tem ${calculateFreeHours(
-                jobs,
-                planningData,
-              )} horas livres no seu dia.`}
+              {`você tem ${
+                jobs.length > 0 ? calculateFreeHours(jobs, planningData) : 0
+              } horas livres no seu dia.`}
             </span>
             <Avatar user={user} />
           </Header.NavBar>
@@ -80,17 +79,17 @@ export function JobMain({ jobsData, planningData, user }: JobMainProps) {
             <div className="info flex gap-8 py-8">
               <Header.Info
                 className="text-xl text-[#FCFDFF] grid"
-                value={countProjects(jobs).totalTjobs}
+                value={jobs.length > 0 ? countProjects(jobs).totalTjobs : 0}
                 text="Projetos ao total"
               />
               <Header.Info
                 className="text-xl text-[#FCFDFF] grid"
-                value={countProjects(jobs).jobsDone}
+                value={jobs.length > 0 ? countProjects(jobs).jobsDone : 0}
                 text="Em andamento"
               />
               <Header.Info
                 className="text-xl text-[#FCFDFF] grid"
-                value={countProjects(jobs).jobsfinish}
+                value={jobs.length > 0 ? countProjects(jobs).jobsfinish : 0}
                 text="Encerrados"
               />
             </div>
@@ -111,17 +110,19 @@ export function JobMain({ jobsData, planningData, user }: JobMainProps) {
         <main className="">
           <h1 className="sr-only">Trabalhos</h1>
           <div className="py-6 space-y-2">
-            {jobs.map((job) => (
-              <Cards
-                key={job.jobId}
-                jobId={job.jobId}
-                name={job.name}
-                remainingDays={job.remainingDays}
-                status={job.status}
-                valueJob={job.valueJob}
-                onDelete={handleDelete}
-              />
-            ))}
+            {jobs.length > 0
+              ? jobs.map((job) => (
+                  <Cards
+                    key={job.jobId}
+                    jobId={job.jobId}
+                    name={job.name}
+                    remainingDays={job.remainingDays}
+                    status={job.status}
+                    valueJob={job.valueJob}
+                    onDelete={handleDelete}
+                  />
+                ))
+              : null}
           </div>
         </main>
       </div>

@@ -19,7 +19,10 @@ type Planning = {
 };
 
 export function calculateFreeHours(jobs: Jobs[], planning: Planning) {
-  const totalHours = jobs.reduce((acc, curr) => {
+  if (jobs.length === 0) {
+    return 0;
+  }
+  const totalHours = jobs?.reduce((acc, curr) => {
     return curr.status ? acc + curr.dailyHours : acc;
   }, 0);
 
