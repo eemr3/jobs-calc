@@ -1,8 +1,11 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { formatCurrency } from '../../../Utils/formatCurrency';
 import { useRouter } from 'next/navigation';
+import { deleteJob } from '../../../service/api/requests';
+import toast from 'react-hot-toast';
+import { ModalDelete } from '../../Modal/Delete';
 
 interface CardsProps {
   jobId?: string;
@@ -11,10 +14,26 @@ interface CardsProps {
   valueJob: number;
   status: boolean;
   userId?: number;
+  onDelete: (jobId: string) => void;
 }
 
-export function Cards({ jobId, name, remainingDays, status, valueJob }: CardsProps) {
-  const route = useRouter();
+export function Cards({
+  jobId,
+  name,
+  remainingDays,
+  status,
+  valueJob,
+  onDelete,
+}: CardsProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+
+  const handleDelete = () => {
+    if (!jobId) return;
+    onDelete(jobId);
+    setIsModalOpen(false);
+  };
+
   return (
     <div
       className={`border border-gray-200 
@@ -71,7 +90,7 @@ export function Cards({ jobId, name, remainingDays, status, valueJob }: CardsPro
         <button
           className="border border-gray-200 p-2 rounded hover:bg-gray-100 transition-all"
           title="Editar Job"
-          onClick={() => route.push(`/project/${jobId}`)}
+          onClick={() => router.push(`/project/${jobId}`)}
         >
           <Image
             className="w-5"
@@ -82,6 +101,7 @@ export function Cards({ jobId, name, remainingDays, status, valueJob }: CardsPro
           />
         </button>
         <button
+          onClick={() => setIsModalOpen(true)}
           className="border border-gray-200 p-2 rounded hover:bg-red-100 transition-all"
           title="Excluir Job"
         >
@@ -94,6 +114,13 @@ export function Cards({ jobId, name, remainingDays, status, valueJob }: CardsPro
           />
         </button>
       </div>
+      <ModalDelete
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Confirmar Exclusão"
+        description="Tem certeza que deseja excluir este job? Essa ação não pode ser desfeita."
+      />
     </div>
   );
 }
