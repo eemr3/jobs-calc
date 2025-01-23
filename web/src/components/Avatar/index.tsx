@@ -4,6 +4,7 @@ import { deleteCookie } from 'cookies-next';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { LetterAvatar } from '../LetterAvatar';
+import Link from 'next/link';
 
 type UserProps = {
   user: User;
@@ -23,7 +24,7 @@ export function Avatar({ user }: UserProps) {
   };
 
   return (
-    <>
+    <div className="flex flex-col items-center hover:text-orange-400 transition">
       {/* Profile dropdown */}
       <Menu as="div" className="relative ml-3">
         <div>
@@ -41,19 +42,6 @@ export function Avatar({ user }: UserProps) {
             ) : (
               <LetterAvatar fullName={user.fullName} />
             )}
-            {/* 
-              <Image
-              alt=""
-              src={
-                user.avatarUrl
-                  ? `http://localhost:5043${user.avatarUrl}`
-                  : '/images/avatar.png'
-              }
-              className="size-14 rounded-full"
-              width={56}
-              height={56}
-            />
-             */}
           </MenuButton>
         </div>
         <MenuItems
@@ -61,58 +49,29 @@ export function Avatar({ user }: UserProps) {
           className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
         >
           <MenuItem>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+            <Link
+              href="/profile"
+              className="block px-4 py-2 text-sm text-center text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
             >
               Ver perfil
-            </a>
+            </Link>
           </MenuItem>
 
           <MenuItem>
             <button
               onClick={handleSignOut}
-              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+              className="block px-4 py-2 text-sm  text-gray-700 data-[focus]:bg-gray-100
+                w-48 data-[focus]:outline-none"
             >
               Sign out
             </button>
           </MenuItem>
         </MenuItems>
       </Menu>
-    </>
+      <div className="grid mt-2">
+        <strong>{user.fullName}</strong>
+        <span className="text-xs">Ver perfil</span>
+      </div>
+    </div>
   );
 }
-
-// import Image from 'next/image';
-
-// type UserProps = {
-//   user: User;
-// };
-
-// type User = {
-//   userId: number;
-//   fullName: string;
-//   email: string;
-//   avatarUrl: string;
-// };
-// export function Avatar(user: UserProps) {
-//   return (
-//     <button className="flex items-center gap-4 hover:text-orange-400 transition">
-//       <div className="grid text-end">
-//         <strong>{user.user.fullName}</strong>
-//         <span className="text-xs">Ver perfil</span>
-//       </div>
-//       {user.user.avatarUrl ? (
-//         <Image
-//           className="w-14 border-2 border-orange-400 rounded-full"
-//           src={`http://localhost:5043${user.user.avatarUrl}`}
-//           alt=""
-//           width={56}
-//           height={56}
-//         />
-//       ) : (
-//         <div className="w-[56px] h-[56px] bg-gray-300"></div>
-//       )}
-//     </button>
-//   );
-// }

@@ -1,11 +1,11 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 const handler = NextAuth({
   pages: {
     signIn: '/',
+    signOut: '/',
   },
   providers: [
     CredentialsProvider({
@@ -20,7 +20,7 @@ const handler = NextAuth({
 
         try {
           // Faça a requisição para sua API externa
-          const response = await fetch('http://localhost:5043/api/v1/auth/login', {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
             method: 'POST',
             body: JSON.stringify(credentials),
             headers: { 'Content-Type': 'application/json' },
