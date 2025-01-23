@@ -41,7 +41,15 @@ public class PlanningService : IPlanningService
   {
     var planning = await _repository.GetPlanningByUserAsync(userId);
 
-    if (planning is null) throw new KeyNotFoundException($"Planning not found for UserId {userId}");
+    if (planning is null) return new Planning
+    {
+      DaysPerWeek = 0,
+      HoursPerDay = 0,
+      MonthlyBudget = 0,
+      VacationPerYear = 0,
+      ValueHour = 0,
+      UserId = userId
+    };
 
     return planning;
   }
