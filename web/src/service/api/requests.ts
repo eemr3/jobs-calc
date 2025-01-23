@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { apiClient } from './api-client';
 import axios from 'axios';
+import { Planning } from '../../Utils/types/planning';
 
 type User = {
   fullName: string;
@@ -47,10 +48,39 @@ export async function getProfile() {
   }
 }
 
+export async function uploadAvatar(file: any) {
+  try {
+    const avatarUrl = await apiClient.put('/users/upload-avatar', file);
+    return avatarUrl.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // Retorna o erro para que o componente o trate
+      throw error;
+    }
+    throw new Error('Erro inesperado ao fazer o upload da imagem.');
+  }
+}
+
 export async function getPlanning() {
   try {
     const response = await apiClient.get('/profile');
+    if (response.status === 404) {
+      return null;
+    }
     const data = response.data;
+    return { ...data, statusCode: 200 };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return error;
+    }
+  }
+}
+
+export async function createPlanning(planning: Planning) {
+  try {
+    const response = await apiClient.post('/profile', planning);
+    const data = await response.data;
+
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -58,6 +88,20 @@ export async function getPlanning() {
     }
   }
 }
+
+export async function updatePlanning(planning: Planning) {
+  try {
+    const response = await apiClient.put('/profile', planning);
+    const data = await response.data;
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return error;
+    }
+  }
+}
+
 export async function getJobs() {
   try {
     const response = await apiClient.get('/jobs');

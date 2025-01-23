@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next/client';
 
 export const apiClient = axios.create({
-  baseURL: 'http://localhost:5043/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 5000,
 });
 
