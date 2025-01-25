@@ -2,14 +2,14 @@ import { cookies } from 'next/headers';
 import { JobMain } from '../../components/Job';
 import { SessionExpired } from '../../components/SessionExpired';
 
-const baseUrl = 'http://localhost:5043/api/v1';
+const baseUrl = 'http://backend:8080';
 
 export default async function Dashboard() {
   const token = (await cookies()).get('access_token');
   async function fetchProfile() {
     'use server';
 
-    const response = await fetch(`${baseUrl}/users/me`, {
+    const response = await fetch(`${baseUrl}/api/v1/users/me`, {
       headers: {
         authorization: `Bearer ${token?.value}`,
       },
@@ -22,7 +22,7 @@ export default async function Dashboard() {
   }
 
   async function fetchPlanning() {
-    const response = await fetch(`${baseUrl}/profile`, {
+    const response = await fetch(`${baseUrl}/api/v1/profile`, {
       headers: {
         authorization: `Bearer ${token?.value}`,
       },
@@ -34,7 +34,7 @@ export default async function Dashboard() {
   async function fetchJobs() {
     'use server';
 
-    const response = await fetch(`${baseUrl}/jobs`, {
+    const response = await fetch(`${baseUrl}/api/v1/jobs`, {
       headers: {
         authorization: `Bearer ${token?.value}`,
       },

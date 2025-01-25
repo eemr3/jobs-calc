@@ -16,6 +16,9 @@ type User = {
   email: string;
   avatarUrl: string;
 };
+
+const baseUrl = 'http://backend:8080';
+
 export function Avatar({ user }: UserProps) {
   const handleSignOut = () => {
     deleteCookie('access_token');
@@ -34,7 +37,7 @@ export function Avatar({ user }: UserProps) {
             {user.avatarUrl ? (
               <Image
                 alt=""
-                src={`http://localhost:5043${user.avatarUrl}`}
+                src={`${baseUrl}${user.avatarUrl}`}
                 className="size-14 rounded-full"
                 width={56}
                 height={56}

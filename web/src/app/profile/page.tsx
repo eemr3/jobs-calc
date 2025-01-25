@@ -2,14 +2,14 @@ import { cookies } from 'next/headers';
 import ProfileComponent from '../../components/Profile';
 import { SessionExpired } from '../../components/SessionExpired';
 
-const baseUrl = 'http://localhost:5043/api/v1';
+const baseUrl = 'http://backend:8080';
 
 export default async function ProfilePage() {
   const token = (await cookies()).get('access_token');
   async function fetchProfile() {
     'use server';
 
-    const response = await fetch(`${baseUrl}/users/me`, {
+    const response = await fetch(`${baseUrl}/api/v1/users/me`, {
       headers: {
         authorization: `Bearer ${token?.value}`,
       },
@@ -23,7 +23,7 @@ export default async function ProfilePage() {
 
   async function fetchPlanning() {
     try {
-      const response = await fetch(`${baseUrl}/profile`, {
+      const response = await fetch(`${baseUrl}/api/v1/profile`, {
         headers: {
           authorization: `Bearer ${token?.value}`,
         },

@@ -32,6 +32,7 @@ type Planning = {
   vacationPerYear: number;
   valueHour: number;
 };
+
 export function ProjectComponent({ job, planning, isEditMode }: JobData) {
   const route = useRouter();
   const [projectValue, setProjectValue] = useState(0);

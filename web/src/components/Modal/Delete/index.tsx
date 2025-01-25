@@ -33,7 +33,7 @@ export function ModalDelete({
           </button>
           <button
             onClick={onConfirm}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+            className="bg-orange-400 text-white px-4 py-2 rounded hover:bg-orange-600 transition"
           >
             Confirmar
           </button>

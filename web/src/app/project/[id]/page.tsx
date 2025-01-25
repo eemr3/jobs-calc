@@ -5,6 +5,8 @@ interface PageProps {
   params: Promise<{ id?: string }>;
 }
 
+const baseUrl = 'http://backend:8080';
+
 export default async function Project({ params }: PageProps) {
   const { id } = await params;
   const isEditMode = id != 'new';
@@ -13,7 +15,7 @@ export default async function Project({ params }: PageProps) {
 
   async function getJob() {
     'use server';
-    const response = await fetch(`http://localhost:5043/api/v1/jobs/${id}`, {
+    const response = await fetch(`${baseUrl}/api/v1/jobs/${id}`, {
       headers: {
         authorization: `Bearer ${token?.value}`,
       },
@@ -23,7 +25,7 @@ export default async function Project({ params }: PageProps) {
     return job;
   }
   async function getPlanning() {
-    const planningRes = await fetch(`http://localhost:5043/api/v1/profile`, {
+    const planningRes = await fetch(`${baseUrl}/api/v1/profile`, {
       headers: {
         authorization: `Bearer ${token?.value}`,
       },

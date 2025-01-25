@@ -23,7 +23,7 @@ type UpdateJobData = {
 
 export async function createUser(user: User) {
   try {
-    const response = await apiClient.post('/users', user);
+    const response = await apiClient.post('/api/v1/users', user);
     const data = await response.data;
 
     return data;
@@ -36,7 +36,7 @@ export async function createUser(user: User) {
 
 export async function getProfile() {
   try {
-    const respose = await apiClient.get('/users/me');
+    const respose = await apiClient.get('/api/v1/users/me');
     const data = await respose.data;
 
     return data;
@@ -50,7 +50,7 @@ export async function getProfile() {
 
 export async function uploadAvatar(file: any) {
   try {
-    const avatarUrl = await apiClient.put('/users/upload-avatar', file);
+    const avatarUrl = await apiClient.put('/api/v1/users/upload-avatar', file);
     return avatarUrl.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -63,7 +63,7 @@ export async function uploadAvatar(file: any) {
 
 export async function getPlanning() {
   try {
-    const response = await apiClient.get('/profile');
+    const response = await apiClient.get('/api/v1/profile');
     if (response.status === 404) {
       return null;
     }
@@ -78,7 +78,7 @@ export async function getPlanning() {
 
 export async function createPlanning(planning: Planning) {
   try {
-    const response = await apiClient.post('/profile', planning);
+    const response = await apiClient.post('/api/v1/profile', planning);
     const data = await response.data;
 
     return data;
@@ -91,7 +91,7 @@ export async function createPlanning(planning: Planning) {
 
 export async function updatePlanning(planning: Planning) {
   try {
-    const response = await apiClient.put('/profile', planning);
+    const response = await apiClient.put('/api/v1/profile', planning);
     const data = await response.data;
 
     return data;
@@ -104,7 +104,7 @@ export async function updatePlanning(planning: Planning) {
 
 export async function getJobs() {
   try {
-    const response = await apiClient.get('/jobs');
+    const response = await apiClient.get('/api/v1/jobs');
     const data = await response.data;
     if (response.status === 200) {
       return data;
@@ -120,7 +120,7 @@ export async function getJobs() {
 
 export async function createNewProject(jobData: CreateJob) {
   try {
-    const response = await apiClient.post('/jobs', jobData);
+    const response = await apiClient.post('/api/v1/jobs', jobData);
 
     const data = response.data;
 
@@ -135,7 +135,7 @@ export async function createNewProject(jobData: CreateJob) {
 
 export async function getJobById(jobId: string) {
   try {
-    const response = await apiClient.get(`/jobs/${jobId}`);
+    const response = await apiClient.get(`/api/v1/jobs/${jobId}`);
     const data = response.data;
 
     return data;
@@ -148,7 +148,7 @@ export async function getJobById(jobId: string) {
 
 export async function updateJob(jobId: string, jobData: UpdateJobData) {
   try {
-    const response = await apiClient.put(`/jobs/${jobId}`, jobData);
+    const response = await apiClient.put(`/api/v1/jobs/${jobId}`, jobData);
     const data = response.data;
     if (response.status === 200) {
       return data;
@@ -162,7 +162,7 @@ export async function updateJob(jobId: string, jobData: UpdateJobData) {
 
 export async function deleteJob(jobId: string) {
   try {
-    const response = await apiClient.delete(`/jobs/${jobId}`);
+    const response = await apiClient.delete(`/api/v1/jobs/${jobId}`);
 
     if (response.status === 204) {
       return true;
