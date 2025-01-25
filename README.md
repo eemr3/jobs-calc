@@ -75,9 +75,27 @@ git clone https://github.com/seu-usuario/JobsCalc.git
 cd JobsCalc
 ```
 
+---
+
 ### Passo 2: Configure as Variáveis de Ambiente
 
 Certifique-se de renomear os arquivos `.env.example` para `.env` nas respectivas pastas.
+
+#### Estrutura de Banco de Dados
+
+- **Banco**: jobs_db
+- Configurado no PostgreSQL via `docker-compose`
+- Tabelas são gerenciadas pelo backend (ASP.NET Core).
+
+#### Backend (`src/JobsCalc/`)
+
+- Para gerar as tabelas
+
+```bash
+ dotnet ef database update
+```
+
+---
 
 ### Passo 3: Inicie os Contêineres na raiz do projeto:
 
@@ -99,22 +117,6 @@ A API estará disponível em:
 
 ```
 http://localhost:5043/api/v1
-```
-
----
-
-## Estrutura de Banco de Dados
-
-- **Banco**: jobs_db
-- Configurado no PostgreSQL via `docker-compose`
-- Tabelas são gerenciadas pelo backend (ASP.NET Core).
-
-#### Backend (`src/JobsCalc/`)
-
-- Para gerar as tabelas
-
-```bash
- dotnet ef database update
 ```
 
 ---
