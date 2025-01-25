@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using JobsCalc.Api.Application.Services.JobService;
+using JobsCalc.Api.Domain.Entities;
 using JobsCalc.Api.Http.Dtos;
 using JobsCalc.Api.Http.Filters;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,9 @@ public class JoibController : ControllerBase
 
   [HttpPost]
   [Authorize]
-  public async Task<IActionResult> CreateJob([FromBody] JobDtoRequest jobDto)
+  [ProducesResponseType(StatusCodes.Status201Created)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
+  public async Task<ActionResult<Job>> CreateJob([FromBody] JobDtoRequest jobDto)
   {
     var token = HttpContext.User.Identity as ClaimsIdentity;
     var userId = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -33,7 +36,10 @@ public class JoibController : ControllerBase
 
   [HttpGet]
   [Authorize]
-  public async Task<IActionResult> GetJobsUser()
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
+  [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResponse))]
+  public async Task<ActionResult<IEnumerable<JobDtoResponse>>> GetJobsUser()
   {
     var token = HttpContext.User.Identity as ClaimsIdentity;
     var userId = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -45,7 +51,10 @@ public class JoibController : ControllerBase
 
   [HttpGet("{jobId}")]
   [Authorize]
-  public async Task<IActionResult> GetJobById(string jobId)
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
+  [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResponse))]
+  public async Task<ActionResult<Job>> GetJobById(string jobId)
   {
     var job = await _servece.GetJob(jobId);
 
@@ -54,7 +63,9 @@ public class JoibController : ControllerBase
 
   [HttpPut("{jobId}")]
   [Authorize]
-  public async Task<IActionResult> UpdateJob(string jobId, [FromBody] JobPatchDto jobDto)
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
+  public async Task<ActionResult<Job>> UpdateJob(string jobId, [FromBody] JobPatchDto jobDto)
   {
     var job = await _servece.UpdateJob(jobId, jobDto);
 
@@ -63,6 +74,8 @@ public class JoibController : ControllerBase
 
   [HttpDelete("{jobId}")]
   [Authorize]
+  [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
   public async Task<IActionResult> DeleteJob(string jobId)
   {
     await _servece.DeleteJob(jobId);

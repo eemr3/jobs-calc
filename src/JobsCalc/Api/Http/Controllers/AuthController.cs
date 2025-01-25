@@ -18,7 +18,9 @@ public class AuthController : ControllerBase
   }
 
   [HttpPost("login")]
-  public async Task<IActionResult> Login([FromBody] LoginDtoRequest login)
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
+  public async Task<ActionResult<LoginDtoResponse>> Login([FromBody] LoginDtoRequest login)
   {
     var token = await _authSevice.SignIn(login);
 

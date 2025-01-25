@@ -21,8 +21,11 @@ public class UserController : ControllerBase
     _uploadService = uploadService;
   }
 
+
   [HttpPost]
-  public async Task<IActionResult> AddUser([FromBody] UserDtoRequest user)
+  [ProducesResponseType(StatusCodes.Status201Created)]
+  [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ConflictResponse))]
+  public async Task<ActionResult<UserDtoResponse>> AddUser([FromBody] UserDtoRequest user)
   {
 
     var userCreated = await _service.AddUserAsync(user);
@@ -32,7 +35,9 @@ public class UserController : ControllerBase
 
   [HttpPut("upload-avatar")]
   [Authorize]
-  public async Task<IActionResult> UploadAvatar([FromForm] UploadFileDto file)
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
+  public async Task<ActionResult<UploadAvatarDto>> UploadAvatar([FromForm] UploadFileDto file)
   {
     var token = HttpContext.User.Identity as ClaimsIdentity;
     var userId = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -44,7 +49,9 @@ public class UserController : ControllerBase
 
   [HttpPut("me/update")]
   [Authorize]
-  public async Task<IActionResult> UpdateUser([FromBody] UserPatchDto userPatch)
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
+  public async Task<ActionResult<UserDtoResponse>> UpdateUser([FromBody] UserPatchDto userPatch)
   {
     var token = HttpContext.User.Identity as ClaimsIdentity;
     var userId = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -55,7 +62,9 @@ public class UserController : ControllerBase
 
   [HttpGet("me")]
   [Authorize]
-  public async Task<IActionResult> GetMe()
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
+  public async Task<ActionResult<UserDtoResponse>> GetMe()
   {
     var token = HttpContext.User.Identity as ClaimsIdentity;
     var email = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
