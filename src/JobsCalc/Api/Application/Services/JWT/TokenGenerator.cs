@@ -8,17 +8,15 @@ namespace JobsCalc.Api.Application.Services.JWT;
 
 public class TokenGenerator
 {
-  private readonly string _jwtSecret;
   private readonly int _expiresMinutes = 30;
-
-  public TokenGenerator(IConfiguration configuration)
-  {
-    _jwtSecret = configuration["JwtSettings:SecretKey"] ?? throw new InvalidOperationException("JWT Secret Key não foi configurado.");
-  }
 
   public string Generator(User user)
   {
-    var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSecret));
+    if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JWT_SECRET_KEY"))) throw new ArgumentNullException("JWT secret key is not configured.");
+
+    var secret = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!;
+
+    var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
     var tokenHandler = new JwtSecurityTokenHandler();
     var tokenDescriptor = new SecurityTokenDescriptor()
     {

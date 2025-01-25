@@ -8,10 +8,10 @@ public class AuthService : IAuthSevice
 {
   private readonly IUserRepository _userRepository;
   private readonly TokenGenerator tokenGenerator;
-  public AuthService(IUserRepository repository, IConfiguration configuration)
+  public AuthService(IUserRepository repository)
   {
     _userRepository = repository;
-    tokenGenerator = new TokenGenerator(configuration);
+    tokenGenerator = new TokenGenerator();
   }
   public async Task<string> SignIn(LoginDtoRequest login)
   {
