@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
         hostname: 'localhost',
         port: '5043',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+      },
+      {
+        protocol: 'http',
+        hostname: 'backend',
+        port: '8080',
+      },
     ],
   },
 };
