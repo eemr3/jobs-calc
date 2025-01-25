@@ -1,3 +1,4 @@
+using JobsCalc.Api.Application.Exceptions;
 using JobsCalc.Api.Domain.Entities;
 using JobsCalc.Api.Infra.Database.EntityFramework;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,12 @@ public class PlanningRepository : IPlanningRepository
 
   public async Task<Planning> AddPlanningAsync(Planning planning)
   {
+    var planningExists = await _context.Plannings
+                        .Where(pl => pl.UserId.Equals(planning.UserId))
+                        .FirstOrDefaultAsync();
+
+    if (planningExists is not null) throw new ConflictException($"Usuário de ID {planning.UserId} já possui planejamento");
+
     var planningAdd = await _context.Plannings.AddAsync(planning);
 
     await _context.SaveChangesAsync();

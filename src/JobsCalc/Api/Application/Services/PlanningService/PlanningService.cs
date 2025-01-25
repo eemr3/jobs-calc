@@ -27,8 +27,8 @@ public class PlanningService : IPlanningService
       DaysPerWeek = planningDto.DaysPerWeek,
       HoursPerDay = planningDto.HoursPerDay,
       MonthlyBudget = planningDto.MonthlyBudget,
-      UserId = planningDto.UserId,
       VacationPerYear = planningDto.VacationPerYear,
+      UserId = planningDto.UserId,
       ValueHour = valueHour
 
     };
