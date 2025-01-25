@@ -3,10 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: postgres_dev
-    restart: always
-    ports:
-      - '${POSTGRES_PORT}:5432'
+    container_name: jobs_calc_db
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -15,11 +12,42 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app_network
+    ports:
+      - '${POSTGRES_PORT}:5432'
+    env_file:
+      - .env
+  backend:
+    build:
+      context: ./src/JobsCalc
+      dockerfile: Dockerfile
+    container_name: jobs_calc_backend
+    env_file:
+      - ./src/JobsCalc/.env
+    networks:
+      - app_network
+    ports:
+      - '5043:8080'
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: jobs_calc_frontend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    env_file:
+      - ./web/.env
+    networks:
+      - app_network
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:
-    driver: local
-
 networks:
   app_network:
     driver: bridge
