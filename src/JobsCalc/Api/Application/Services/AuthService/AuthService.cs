@@ -4,7 +4,7 @@ using JobsCalc.Api.Infra.Database.Repositories;
 
 namespace JobsCalc.Api.Application.Services.AuthService;
 
-public class AuthService : IAuthSevice
+public class AuthService : IAuthService
 {
   private readonly IUserRepository _userRepository;
   private readonly TokenGenerator tokenGenerator;

@@ -2,7 +2,7 @@ using JobsCalc.Api.Http.Dtos;
 
 namespace JobsCalc.Api.Application.Services.AuthService;
 
-public interface IAuthSevice
+public interface IAuthService
 {
   Task<string> SignIn(LoginDtoRequest login);
 }

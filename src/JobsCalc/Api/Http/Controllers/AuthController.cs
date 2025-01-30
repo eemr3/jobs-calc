@@ -10,9 +10,9 @@ namespace JobsCalc.Api.Http.Controllers;
 public class AuthController : ControllerBase
 {
 
-  private readonly IAuthSevice _authSevice;
+  private readonly IAuthService _authSevice;
 
-  public AuthController(IAuthSevice service)
+  public AuthController(IAuthService service)
   {
     _authSevice = service;
   }
