@@ -1,10 +1,12 @@
 using System.Text;
+using IOPath = System.IO.Path;
 using DotNetEnv;
 using JobsCalc.Api.Application.Services.AuthService;
 using JobsCalc.Api.Application.Services.JobService;
 using JobsCalc.Api.Application.Services.PlanningService;
 using JobsCalc.Api.Application.Services.UserService;
 using JobsCalc.Api.Http.Filters;
+using JobsCalc.Api.Http.GraphQL.Queries;
 using JobsCalc.Api.Http.Middleware;
 using JobsCalc.Api.Infra.Database.EntityFramework;
 using JobsCalc.Api.Infra.Database.Repositories;
@@ -14,13 +16,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using JobsCalc.Api.Http.GraphQL.Mutations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Carregar variáveis do .env, se o arquivo existir
-Env.Load(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
+Env.Load(IOPath.Combine(Directory.GetCurrentDirectory(), ".env"));
 
-var avatarPath = Path.Combine(Directory.GetCurrentDirectory(), "upload", "avatar");
+var avatarPath = IOPath.Combine(Directory.GetCurrentDirectory(), "upload", "avatar");
 if (!Directory.Exists(avatarPath))
 {
     Directory.CreateDirectory(avatarPath);
@@ -72,7 +75,7 @@ builder.Services.AddDbContext<IAppDbContext, AppDbContext>(options => options.Us
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAuthSevice, AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPlanningRepository, PlanningRepository>();
 builder.Services.AddScoped<IPlanningService, PlanningService>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
@@ -106,6 +109,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
+builder.Services.AddGraphQLServer().AddAuthorization()
+       .AddQueryType<Query>()
+       .AddMutationType<Mutation>()
+       .AddType<UploadType>();
+
+
 var app = builder.Build();
 
 app.UseMiddleware<UnauthorizedResponseMiddleware>();
@@ -120,7 +130,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "upload", "avatar")),
+        IOPath.Combine(Directory.GetCurrentDirectory(), "upload", "avatar")),
     RequestPath = "/upload/avatar"
 });
 
@@ -130,5 +140,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGraphQL();
 
 app.Run();
