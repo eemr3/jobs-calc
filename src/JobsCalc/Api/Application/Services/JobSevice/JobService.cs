@@ -2,6 +2,7 @@ using JobsCalc.Api.Application.Utils;
 using JobsCalc.Api.Domain.Entities;
 using JobsCalc.Api.Http.Dtos;
 using JobsCalc.Api.Infra.Database.Repositories;
+using SystemKeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
 namespace JobsCalc.Api.Application.Services.JobService;
 
@@ -32,7 +33,7 @@ public class JobService : IJobService
   public async Task<Job?> GetJob(string jobId)
   {
     var job = await _jobRepository.GetJob(jobId);
-    if (job is null) throw new KeyNotFoundException($"Job with ID {jobId} not found");
+    if (job is null) throw new SystemKeyNotFoundException($"Job with ID {jobId} not found");
 
     return job;
   }
@@ -42,7 +43,7 @@ public class JobService : IJobService
 
     var planning = await _planningRepository.GetPlanningByUserAsync(userId);
 
-    if (planning is null) throw new KeyNotFoundException($"Planning user ID {userId} not found");
+    if (planning is null) throw new SystemKeyNotFoundException($"Planning user ID {userId} not found");
 
     var jobs = await _jobRepository.GetJobsUser(userId);
 

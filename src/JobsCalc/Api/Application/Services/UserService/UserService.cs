@@ -3,6 +3,7 @@ using JobsCalc.Api.Application.Exceptions;
 using JobsCalc.Api.Domain.Entities;
 using JobsCalc.Api.Http.Dtos;
 using JobsCalc.Api.Infra.Database.Repositories;
+using SystemKeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
 namespace JobsCalc.Api.Application.Services.UserService;
 
@@ -44,7 +45,7 @@ public class UserService : IUserService
   public async Task<UserDtoResponse> GetUserByEmail(string email)
   {
     var user = await _userRepository.GetUserByEmail(email);
-    if (user is null) throw new KeyNotFoundException("User not found.");
+    if (user is null) throw new SystemKeyNotFoundException("User not found.");
 
     return new UserDtoResponse
     {
@@ -68,7 +69,7 @@ public class UserService : IUserService
   {
     var userUpdated = await _userRepository.UpdateUser(userId, user);
 
-    if (userUpdated is null) throw new KeyNotFoundException($"User with ID {userId} not found.");
+    if (userUpdated is null) throw new SystemKeyNotFoundException($"User with ID {userId} not found.");
 
     return new UserDtoResponse
     {

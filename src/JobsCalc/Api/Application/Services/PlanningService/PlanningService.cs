@@ -2,6 +2,7 @@ using JobsCalc.Api.Application.Utils;
 using JobsCalc.Api.Domain.Entities;
 using JobsCalc.Api.Http.Dtos;
 using JobsCalc.Api.Infra.Database.Repositories;
+using SystemKeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
 namespace JobsCalc.Api.Application.Services.PlanningService;
 
@@ -74,7 +75,7 @@ public class PlanningService : IPlanningService
       ValueHour = valueHour,
     });
 
-    if (planning is null) throw new KeyNotFoundException($"Planning userId {planningDto.UserId.Value} not found");
+    if (planning is null) throw new SystemKeyNotFoundException($"Planning userId {planningDto.UserId.Value} not found");
 
     return planning;
   }

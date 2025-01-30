@@ -1,6 +1,7 @@
 using JobsCalc.Api.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using SystemKeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
 namespace JobsCalc.Api.Http.Filters;
 
@@ -13,7 +14,7 @@ public class CustomExceptionFilter : ExceptionFilterAttribute
   }
   public override void OnException(ExceptionContext context)
   {
-    if (context.Exception is KeyNotFoundException keyNotFoundException)
+    if (context.Exception is SystemKeyNotFoundException keyNotFoundException)
     {
       var response = new
       {

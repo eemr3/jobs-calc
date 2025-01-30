@@ -2,6 +2,7 @@ using JobsCalc.Api.Domain.Entities;
 using JobsCalc.Api.Http.Dtos;
 using JobsCalc.Api.Infra.Database.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using SystemKeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
 namespace JobsCalc.Api.Infra.Database.Repositories;
 
@@ -49,7 +50,7 @@ public class JobRepository : IJobRepository
       throw new ArgumentException($"Invalid Job ID format: {jobId}");
     }
     var jobExists = await _context.Jobs.FirstOrDefaultAsync(jb => jb.JobId.Equals(jobGuid));
-    if (jobExists is null) throw new KeyNotFoundException($"Job with ID {jobId} not found");
+    if (jobExists is null) throw new SystemKeyNotFoundException($"Job with ID {jobId} not found");
 
     if (!string.IsNullOrEmpty(jobPatch.Name))
     {
@@ -78,7 +79,7 @@ public class JobRepository : IJobRepository
       throw new ArgumentException($"Invalid Job ID format: {jobId}");
     }
     var job = await _context.Jobs.FirstOrDefaultAsync(jb => jb.JobId.Equals(jobGuid));
-    if (job is null) throw new KeyNotFoundException($"JOb with ID {jobId} not found");
+    if (job is null) throw new SystemKeyNotFoundException($"JOb with ID {jobId} not found");
 
     _context.Jobs.Remove(job);
     await _context.SaveChangesAsync();
