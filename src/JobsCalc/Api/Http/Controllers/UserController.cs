@@ -37,12 +37,12 @@ public class UserController : ControllerBase
   [Authorize]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(UnauthorizedResponse))]
-  public async Task<ActionResult<UploadAvatarDto>> UploadAvatar([FromForm] UploadFileDto file)
+  public async Task<ActionResult<UploadAvatarDto>> UploadAvatar([FromForm] IFormFile file)
   {
     var token = HttpContext.User.Identity as ClaimsIdentity;
     var userId = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-    string avatarUrl = await _uploadService.UploadAvatarAsync(int.Parse(userId!), file);
+    string avatarUrl = await _uploadService.UploadAvatarRestAsync(int.Parse(userId!), file);
 
     return Ok(new { message = "Avatar updated successfully.", avatar_url = avatarUrl });
   }

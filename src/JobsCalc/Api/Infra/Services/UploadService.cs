@@ -1,43 +1,80 @@
 
 using JobsCalc.Api.Http.Dtos;
 using JobsCalc.Api.Infra.Database.Repositories;
+using IOPath = System.IO.Path;
+using SystemKeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
 namespace JobsCalc.Api.Infra.Services;
 public class UploadService : IUploadService
 {
   private readonly IUserRepository _userRepository;
-  private readonly string _uploadDir = Path.Combine("upload", "avatar");
+  private readonly string _uploadDir = IOPath.Combine("upload", "avatar");
   public UploadService(IUserRepository userRepository)
   {
     _userRepository = userRepository;
     Directory.CreateDirectory(_uploadDir);
   }
 
-  public async Task<string> UploadAvatarAsync(int userId, UploadFileDto avatar)
+  public async Task<string> UploadAvatarRestAsync(int userId, IFormFile file)
   {
-    if (avatar.File == null || avatar.File.Length == 0)
+    if (file == null)
+    {
+      throw new ArgumentException("No files were uploaded.");
+    }
+    return await UploadAvatarAsync(userId, file);
+  }
+
+  public async Task<string> UploadAvatarGraphQLAsync(int userId, IFile file)
+  {
+    return await UploadAvatarAsync(userId, file);
+  }
+
+  private async Task<string> UploadAvatarAsync(int userId, object file)
+  {
+    if (file == null)
     {
       throw new ArgumentException("No files were uploaded.");
     }
 
-    if (avatar.File.Length > 2 * 1024 * 1024)
+    // Determina qual arquivo usar (GraphQL ou REST)
+    long fileSize;
+    string fileName;
+
+    switch (file)
     {
-      throw new ArgumentException("The file must be a maximum of 2 MB");
+      case IFormFile formFile:
+        fileSize = formFile?.Length ?? throw new ArgumentException("File is null.");
+        fileName = formFile.FileName;
+        break;
+      case IFile gqlFile:
+        fileSize = gqlFile.Length ?? throw new ArgumentException("File size is null.");
+        fileName = gqlFile.Name;
+        break;
+      default:
+        throw new ArgumentException("Formato de arquivo desconhecido.");
     }
 
+    // Validação de tamanho
+    if (fileSize > 2 * 1024 * 1024)
+    {
+      throw new ArgumentException("O arquivo deve ter no máximo 2 MB.");
+    }
+
+    // Validação de formato
+    string extension = IOPath.GetExtension(fileName).ToLower();
     string[] allowedExtensions = [".jpg", ".jpeg", ".png"];
-    string extension = Path.GetExtension(avatar.File.FileName).ToLower();
+
     if (!allowedExtensions.Contains(extension))
     {
-      throw new ArgumentException("File format not allowed.");
+      throw new ArgumentException("Formato de arquivo não permitido.");
     }
 
     var user = await _userRepository.GetUserById(userId);
-    if (user is null) throw new KeyNotFoundException($"User with ID {userId} not found.");
+    if (user is null) throw new SystemKeyNotFoundException($"User with ID {userId} not found.");
 
     if (!string.IsNullOrEmpty(user.AvatarUrl))
     {
-      var oldFilePath = Path.Combine(_uploadDir, Path.GetFileName(user.AvatarUrl));
+      var oldFilePath = IOPath.Combine(_uploadDir, IOPath.GetFileName(user.AvatarUrl));
       if (File.Exists(oldFilePath))
       {
         File.Delete(oldFilePath);
@@ -46,11 +83,19 @@ public class UploadService : IUploadService
 
 
     string newFileName = $"{Guid.NewGuid()}{extension}";
-    string newFilePath = Path.Combine(_uploadDir, newFileName);
+    string newFilePath = IOPath.Combine(_uploadDir, newFileName);
 
+    // Salva o arquivo
     using (var stream = new FileStream(newFilePath, FileMode.Create))
     {
-      await avatar.File.CopyToAsync(stream);
+      if (file is IFormFile fFile)
+      {
+        await fFile.CopyToAsync(stream);
+      }
+      else if (file is IFile gqlF)
+      {
+        await gqlF.CopyToAsync(stream);
+      }
     }
 
     user.AvatarUrl = $"/{_uploadDir}/{newFileName}";
