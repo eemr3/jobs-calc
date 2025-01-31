@@ -1,53 +1,28 @@
 'use client';
-import React, { useState } from 'react';
-import { Header } from '../Header';
+import { useMutation } from '@apollo/client';
 import Image from 'next/image';
-import { calculateFreeHours, countProjects } from '../../Utils/calculate';
-import { Avatar } from '../Avatar';
 import Link from 'next/link';
-import { Icon } from '../Button/Icon';
-import { deleteJob } from '../../service/api/requests';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { calculateFreeHours, countProjects } from '../../libs/calculate';
+import { Job, JobMainProps } from '../../libs/types/typesAndInterfaces';
+import { DELETE_JOB } from '../../service/graphql/mutations/jobMutation';
+import { Avatar } from '../Avatar';
+import { Icon } from '../Button/Icon';
+import { Header } from '../Header';
 import { Cards } from './Cards';
 
-type JobMainProps = {
-  jobsData: Job[];
-  planningData: Planning;
-  user: User;
-};
-
-type Job = {
-  jobId?: string;
-  name: string;
-  dailyHours: number;
-  totalHours?: number;
-  remainingDays: number;
-  valueJob: number;
-  status: boolean;
-  userId?: number;
-};
-
-type User = {
-  userId: number;
-  fullName: string;
-  email: string;
-  avatarUrl: string;
-};
-type Planning = {
-  planningId: string;
-  monthlyBudget: number;
-  daysPerWeek: number;
-  hoursPerDay: number;
-  vacationPerYear: number;
-  valueHour: number;
-};
-
 export function JobMain({ jobsData, planningData, user }: JobMainProps) {
+  const [deleteJob] = useMutation(DELETE_JOB);
   const [jobs, setJobs] = useState<Job[]>(jobsData);
 
   const handleDelete = async (jobId: string) => {
     try {
-      await deleteJob(jobId);
+      await deleteJob({
+        variables: {
+          jobId: jobId,
+        },
+      });
       setJobs((prevJobs) => prevJobs.filter((job) => job.jobId !== jobId));
       return toast.success('Job excluído com sucesso!');
     } catch (error) {
@@ -93,16 +68,30 @@ export function JobMain({ jobsData, planningData, user }: JobMainProps) {
                 text="Encerrados"
               />
             </div>
-            <Link
-              href="/project/new"
-              className="uppercase flex gap-4 bg-orange-400 h-fit px-3 py-2 
+            {planningData.planningId !== '00000000-0000-0000-0000-000000000000' ? (
+              <Link
+                href="/project/new"
+                className="uppercase flex gap-4 bg-orange-400 h-fit px-3 py-2 
                 rounded items-center hover:brightness-110 transition-al text-[#FCFDFF]"
-            >
-              <span className="bg-opacity-10 bg-white rounded p-0.5">
-                <Icon.Plus24 height={24} width={24} />
-              </span>
-              <p className="px-2 text-xs font-bold">Adicionar novo job</p>
-            </Link>
+              >
+                <span className="bg-opacity-10 bg-white rounded p-0.5">
+                  <Icon.Plus24 height={24} width={24} />
+                </span>
+                <p className="px-2 text-xs font-bold">Adicionar novo job</p>
+              </Link>
+            ) : (
+              <Link
+                href="/profile"
+                className="uppercase flex gap-4 bg-orange-400 h-fit px-3 py-2 
+              rounded items-center hover:brightness-110 transition-al text-[#FCFDFF]"
+              >
+                {' '}
+                <span className="bg-opacity-10 bg-white rounded p-0.5">
+                  <Icon.Planning height={24} width={24} />
+                </span>
+                <p className="px-2 text-xs font-bold">Criar seu planejamento</p>
+              </Link>
+            )}
           </Header.Summary>
         </Header.Content>
       </Header.Root>

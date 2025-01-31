@@ -1,36 +1,36 @@
 'use client';
+import { useMutation } from '@apollo/client';
 import { PencilSquareIcon } from '@heroicons/react/16/solid';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { createPlanning, updatePlanning, uploadAvatar } from '../../service/api/requests';
-import { formatCurrency } from '../../Utils/formatCurrency';
-import { Planning } from '../../Utils/types/planning';
+import { formatCurrency } from '../../libs/formatCurrency';
+import { Planning, ProfileProps, User } from '../../libs/types/typesAndInterfaces';
+import {
+  CREATE_PLANNING,
+  UPDATE_PLANNING,
+} from '../../service/graphql/mutations/planningMutation';
+import { UPDATE_USER } from '../../service/graphql/mutations/userMutation';
+import { uploadAvatar } from '../../service/rest/rest-requests';
 import Aside from '../Aside';
 import { Button } from '../Button';
 import { Header } from '../Header';
 import { Input } from '../Input';
-import { useRouter } from 'next/navigation';
-
-type ProfileProps = {
-  user: User;
-  planning: Planning;
-};
-
-type User = {
-  userId?: number;
-  fullName: string;
-  email: string;
-  password: string;
-  avatarUrl?: string;
-};
 
 const initialAvatar = '/images/profile-defaul.svg';
 
-const baseUrl = 'http://backend:8080';
+const baseUrl =
+  process.env.NEXT_PUBLIC_DEVELOPMENT === 'true'
+    ? `http://localhost:5043`
+    : `http://backend:8080`;
 
 export default function ProfileComponent({ user, planning }: ProfileProps) {
+  const [createPlanning] = useMutation(CREATE_PLANNING);
+  const [updatePlanning] = useMutation(UPDATE_PLANNING);
+  const [updateUser] = useMutation(UPDATE_USER);
+
   const router = useRouter();
   const [profileImage, setProfileImage] = useState(initialAvatar);
   const [userData, setUserData] = useState<Partial<User>>({ fullName: user.fullName });
@@ -67,7 +67,7 @@ export default function ProfileComponent({ user, planning }: ProfileProps) {
     } catch (error: any) {
       if (error.response?.status === 401) {
         toast.error('Sessão expirada. Redirecionando para o login...');
-        return router.push('/');
+        return router.push('/sign-in');
       } else {
         toast.error('Erro ao enviar a imagem. Tente novamente.');
       }
@@ -94,28 +94,58 @@ export default function ProfileComponent({ user, planning }: ProfileProps) {
 
   const handleSubmit = async () => {
     const payload = {
-      daysPerWeek: planningData.daysPerWeek,
-      hoursPerDay: planningData.hoursPerDay,
-      monthlyBudget: planningData.monthlyBudget,
-      vacationPerYear: planningData.vacationPerYear,
+      daysPerWeek: Number(planningData.daysPerWeek),
+      hoursPerDay: Number(planningData.hoursPerDay),
+      monthlyBudget: Number(planningData.monthlyBudget),
+      vacationPerYear: Number(planningData.vacationPerYear),
     };
 
     try {
       const isNewPlanning =
         planningData.planningId === '00000000-0000-0000-0000-000000000000';
-      const response = isNewPlanning
-        ? await createPlanning(payload)
-        : await updatePlanning({ ...payload, planningId: planningData.planningId });
 
-      if (response) {
-        setPlanningData({
-          planningId: response.planningId,
-          daysPerWeek: response.daysPerWeek,
-          hoursPerDay: response.hoursPerDay,
-          monthlyBudget: response.monthlyBudget,
-          vacationPerYear: response.vacationPerYear,
-          valueHour: response.valueHour,
+      const { data } = isNewPlanning
+        ? await createPlanning({
+            variables: {
+              input: payload,
+            },
+          })
+        : await updatePlanning({
+            variables: {
+              input: { ...payload, planningId: planningData.planningId },
+            },
+          });
+
+      if (!isNewPlanning) {
+        await updateUser({
+          variables: {
+            input: {
+              fullName: userData.fullName,
+            },
+          },
         });
+      }
+
+      if (data) {
+        if (data.createPlanning)
+          setPlanningData({
+            planningId: data.createPlanning.planningId,
+            daysPerWeek: data.createPlanning.daysPerWeek,
+            hoursPerDay: data.createPlanning.hoursPerDay,
+            monthlyBudget: data.createPlanning.monthlyBudget,
+            vacationPerYear: data.createPlanning.vacationPerYear,
+            valueHour: data.createPlanning.valueHour,
+          });
+        if (data.updatePlanning) {
+          setPlanningData({
+            planningId: data.updatePlanning.planningId,
+            daysPerWeek: data.updatePlanning.daysPerWeek,
+            hoursPerDay: data.updatePlanning.hoursPerDay,
+            monthlyBudget: data.updatePlanning.monthlyBudget,
+            vacationPerYear: data.updatePlanning.vacationPerYear,
+            valueHour: data.updatePlanning.valueHour,
+          });
+        }
 
         toast.success(
           isNewPlanning
@@ -123,7 +153,8 @@ export default function ProfileComponent({ user, planning }: ProfileProps) {
             : 'Seu plano foi atualizado com sucesso!',
         );
       }
-    } catch {
+    } catch (error) {
+      console.error(error);
       toast.error('Houve algum problema ao salvar o seu plano.');
     }
   };
@@ -133,7 +164,7 @@ export default function ProfileComponent({ user, planning }: ProfileProps) {
       <Header.Root className="py-8 bg-gray-700 p-12">
         <Header.NavBar className="">
           <div className="animate-up text-gray-300 font-semibold flex items-center">
-            <Link href="/dashboard">
+            <Link href="/">
               <Image src="/images/back.svg" alt="" width={24} height={24} />
             </Link>
             <h1 className="mx-auto">Perfil</h1>
@@ -172,12 +203,21 @@ export default function ProfileComponent({ user, planning }: ProfileProps) {
             </strong>
           </p>
           <div className="mt-10">
-            <Button.Root
-              onClick={handleSubmit}
-              className="bg-green-500 px-20 py-2 rounded text-[#FCFDFE] hover:bg-green-600 hover:text-gray-200"
-            >
-              Salvar
-            </Button.Root>
+            {planningData.planningId === '00000000-0000-0000-0000-000000000000' ? (
+              <Button.Root
+                onClick={handleSubmit}
+                className="bg-green-500 px-20 py-2 rounded text-[#FCFDFE] hover:bg-green-600 hover:text-gray-200"
+              >
+                Salvar
+              </Button.Root>
+            ) : (
+              <Button.Root
+                onClick={handleSubmit}
+                className="bg-green-500 px-20 py-2 rounded text-[#FCFDFE] hover:bg-green-600 hover:text-gray-200"
+              >
+                Atualizar
+              </Button.Root>
+            )}
           </div>
         </Aside>
 

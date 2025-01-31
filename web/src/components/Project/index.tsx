@@ -2,38 +2,20 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { createNewProject, updateJob } from '../../service/api/requests';
-import { formatCurrency } from '../../Utils/formatCurrency';
+import { formatCurrency } from '../../libs/formatCurrency';
 import Aside from '../Aside';
 import { Button } from '../Button';
 import { Header } from '../Header';
-
-import toast from 'react-hot-toast';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
-
-interface JobData {
-  job?: Job;
-  planning: Planning;
-  isEditMode: boolean;
-}
-
-type Job = {
-  jobId: string;
-  name: string;
-  dailyHours: number;
-  totalHours: number;
-};
-
-type Planning = {
-  planningId: string;
-  monthlyBudget: number;
-  daysPerWeek: number;
-  hoursPerDay: number;
-  vacationPerYear: number;
-  valueHour: number;
-};
+import toast from 'react-hot-toast';
+import { JobData } from '../../libs/types/typesAndInterfaces';
+import { CREATE_JOB, UPDATE_JOB } from '../../service/graphql/mutations/jobMutation';
 
 export function ProjectComponent({ job, planning, isEditMode }: JobData) {
+  const [createJob] = useMutation(CREATE_JOB);
+  const [updateJob] = useMutation(UPDATE_JOB);
+
   const route = useRouter();
   const [projectValue, setProjectValue] = useState(0);
   const [formData, setFormData] = useState({
@@ -67,16 +49,29 @@ export function ProjectComponent({ job, planning, isEditMode }: JobData) {
   const handleSubmit = async () => {
     try {
       if (isEditMode && job?.jobId) {
-        await updateJob(job.jobId, {
-          name: formData.name,
-          dailyHours: formData.dailyHours,
-          totalHours: formData.totalHours,
+        await updateJob({
+          variables: {
+            input: {
+              name: formData.name,
+              dailyHours: formData.dailyHours,
+              totalHours: formData.totalHours,
+            },
+            jobId: job.jobId,
+          },
         });
 
-        route.push('/dashboard');
+        route.push('/'); //redirect dashboard
       } else {
-        await createNewProject(formData);
-        route.push('/dashboard');
+        await createJob({
+          variables: {
+            input: {
+              name: formData.name,
+              dailyHours: Number(formData.dailyHours),
+              totalHours: Number(formData.totalHours),
+            },
+          },
+        });
+        route.push('/'); //redirect dashboard
       }
     } catch (error) {
       toast.error('Houve um problema ao tentar salvar o projeto.');
@@ -88,7 +83,7 @@ export function ProjectComponent({ job, planning, isEditMode }: JobData) {
       <Header.Root className="py-8 bg-gray-700 p-12">
         <Header.NavBar className="">
           <div className="animate-up text-gray-300 font-semibold flex items-center">
-            <Link href="/dashboard">
+            <Link href="/">
               <Image src="/images/back.svg" alt="" width={24} height={24} />
             </Link>
             <h1 className="mx-auto">Projetos</h1>

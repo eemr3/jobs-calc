@@ -1,16 +1,18 @@
 'use client';
+import { useMutation } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { RegisterDataProps, registerSchema } from '../../../Utils/zod-schema';
-import { Input } from '../../Input';
-import { useState } from 'react';
-import { createUser } from '../../../service/api/requests';
-import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { RegisterDataProps, registerSchema } from '../../../libs/zod-schema';
+import { CREATE_USER } from '../../../service/graphql/mutations/userMutation';
+import { Input } from '../../Input';
 
 export function RegisterForm() {
   const router = useRouter();
+  const [registerUser] = useMutation(CREATE_USER);
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -24,13 +26,17 @@ export function RegisterForm() {
 
   const onSubmit = async (data: RegisterDataProps) => {
     try {
-      await createUser({
-        fullName: data.fullName,
-        email: data.email,
-        password: data.password,
+      await registerUser({
+        variables: {
+          input: {
+            fullName: data.fullName,
+            email: data.email,
+            password: data.password,
+          },
+        },
       });
       toast.success('Conta criada com sucesso!');
-      return router.push('/');
+      return router.push('/sign-in');
     } catch (error) {
       return toast.error('Algo deu errado ao criar novo usuário.');
     }
@@ -138,7 +144,10 @@ export function RegisterForm() {
 
       <p className="mt-10 text-center text-sm/6 text-[#FEFDFC]">
         Já possui uma conta?{' '}
-        <Link href="/" className="font-semibold text-orange-400 hover:text-orange-500">
+        <Link
+          href="/sign-in"
+          className="font-semibold text-orange-400 hover:text-orange-500"
+        >
           Entar
         </Link>
       </p>

@@ -1,21 +1,10 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
-import { formatCurrency } from '../../../Utils/formatCurrency';
 import { useRouter } from 'next/navigation';
-import { deleteJob } from '../../../service/api/requests';
-import toast from 'react-hot-toast';
+import { useState } from 'react';
+import { formatCurrency } from '../../../libs/formatCurrency';
 import { ModalDelete } from '../../Modal/Delete';
-
-interface CardsProps {
-  jobId?: string;
-  name: string;
-  remainingDays: number;
-  valueJob: number;
-  status: boolean;
-  userId?: number;
-  onDelete: (jobId: string) => void;
-}
+import { CardsProps } from '../../../libs/types/typesAndInterfaces';
 
 export function Cards({
   jobId,
