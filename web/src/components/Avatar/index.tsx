@@ -3,27 +3,20 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { deleteCookie } from 'cookies-next';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
-import { LetterAvatar } from '../LetterAvatar';
 import Link from 'next/link';
+import { UserProps } from '../../libs/types/typesAndInterfaces';
+import { LetterAvatar } from '../LetterAvatar';
 
-type UserProps = {
-  user: User;
-};
-
-type User = {
-  userId: number;
-  fullName: string;
-  email: string;
-  avatarUrl: string;
-};
-
-const baseUrl = 'http://backend:8080';
+const baseUrl =
+  process.env.NEXT_PUBLIC_DEVELOPMENT === 'true'
+    ? `http://localhost:5043`
+    : `http://backend:8080`;
 
 export function Avatar({ user }: UserProps) {
   const handleSignOut = () => {
     deleteCookie('access_token');
 
-    signOut({ callbackUrl: '/' });
+    signOut({ callbackUrl: '/sign-in' });
   };
 
   return (

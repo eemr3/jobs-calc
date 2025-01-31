@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { DataProps, schema } from '../../../Utils/zod-schema';
+import { DataProps, schema } from '../../../libs/zod-schema';
 import { Button } from '../../Button';
 import { Icon } from '../../Button/Icon';
 import { Input } from '../../Input';
@@ -36,7 +36,7 @@ export default function LoginForm() {
       setIsLoading(false);
       toast.error('O endereço de e-mail ou a senha fornecidos estão incorretos!');
     } else {
-      router.push('/dashboard');
+      router.push('/'); //redirect dashboard
     }
   };
   return (

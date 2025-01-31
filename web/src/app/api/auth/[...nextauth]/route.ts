@@ -4,8 +4,8 @@ import { cookies } from 'next/headers';
 
 const handler = NextAuth({
   pages: {
-    signIn: '/',
-    signOut: '/',
+    signIn: '/sign-in',
+    signOut: '/sign-in',
   },
   providers: [
     CredentialsProvider({
@@ -17,10 +17,13 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials) return null;
-
+        const baseUrl =
+          process.env.NEXT_PUBLIC_DEVELOPMENT === 'true'
+            ? `http://localhost:5043/api/v1/auth/login`
+            : `http://backend:8080/api/v1/auth/login`;
         try {
           // Faça a requisição para sua API externa
-          const response = await fetch(`http://backend:8080/api/v1/auth/login`, {
+          const response = await fetch(baseUrl, {
             method: 'POST',
             body: JSON.stringify(credentials),
             headers: { 'Content-Type': 'application/json' },
