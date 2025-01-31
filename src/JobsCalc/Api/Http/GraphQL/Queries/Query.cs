@@ -6,6 +6,7 @@ using JobsCalc.Api.Application.Services.PlanningService;
 using JobsCalc.Api.Application.Services.UserService;
 using JobsCalc.Api.Domain.Entities;
 using JobsCalc.Api.Http.Dtos;
+using SystemKeyNotFoundException = System.Collections.Generic.KeyNotFoundException;
 
 namespace JobsCalc.Api.Http.GraphQL.Queries;
 
@@ -44,10 +45,19 @@ public class Query
   [Authorize]
   public async Task<IEnumerable<JobDtoResponse>> GetAllJobs([Service] IJobService jobService, ClaimsPrincipal claimsPrincipal)
   {
-    var userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-    var jobs = await jobService.GetJobsUser(int.Parse(userId!));
-    var defaultList = new List<JobDtoResponse>();
-    return jobs ?? defaultList;
+    try
+    {
+      var userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+      var jobs = await jobService.GetJobsUser(int.Parse(userId!));
+
+      return jobs ?? new List<JobDtoResponse>();
+
+    }
+    catch (SystemKeyNotFoundException ex)
+    {
+
+      throw new GraphQLException(ex.Message);
+    }
   }
 
   [GraphQLDescription("Retorna um job pelo ID")]
