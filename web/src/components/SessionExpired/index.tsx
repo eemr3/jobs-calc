@@ -12,7 +12,7 @@ export const SessionExpired: React.FC = () => {
   const handleConfirm = async () => {
     setModalOpen(false);
     deleteCookie('access_token');
-    await signOut({ callbackUrl: '/' }); // Redireciona para a página de login
+    await signOut({ callbackUrl: '/sign-in' }); // Redireciona para a página de login
   };
 
   return <ModalSessionAlert isOpen={isModalOpen} onConfirm={handleConfirm} />;
