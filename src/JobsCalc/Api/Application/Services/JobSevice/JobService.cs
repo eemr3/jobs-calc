@@ -43,7 +43,7 @@ public class JobService : IJobService
 
     var planning = await _planningRepository.GetPlanningByUserAsync(userId);
 
-    if (planning is null) throw new SystemKeyNotFoundException($"Planning user ID {userId} not found");
+    if (planning is null) return new List<JobDtoResponse>();
 
     var jobs = await _jobRepository.GetJobsUser(userId);
 
