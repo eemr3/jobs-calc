@@ -53,8 +53,8 @@ export function ProjectComponent({ job, planning, isEditMode }: JobData) {
           variables: {
             input: {
               name: formData.name,
-              dailyHours: formData.dailyHours,
-              totalHours: formData.totalHours,
+              dailyHours: Number(formData.dailyHours),
+              totalHours: Number(formData.totalHours),
             },
             jobId: job.jobId,
           },

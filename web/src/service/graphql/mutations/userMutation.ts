@@ -19,3 +19,11 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
+export const UPLOAD_AVATAR = gql`
+  mutation UploadAvatar($file: Upload!) {
+    uploadAvatar(file: $file) {
+      avatar_url
+    }
+  }
+`;
