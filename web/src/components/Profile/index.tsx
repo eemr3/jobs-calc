@@ -12,8 +12,7 @@ import {
   CREATE_PLANNING,
   UPDATE_PLANNING,
 } from '../../service/graphql/mutations/planningMutation';
-import { UPDATE_USER } from '../../service/graphql/mutations/userMutation';
-import { uploadAvatar } from '../../service/rest/rest-requests';
+import { UPDATE_USER, UPLOAD_AVATAR } from '../../service/graphql/mutations/userMutation';
 import Aside from '../Aside';
 import { Button } from '../Button';
 import { Header } from '../Header';
@@ -30,6 +29,7 @@ export default function ProfileComponent({ user, planning }: ProfileProps) {
   const [createPlanning] = useMutation(CREATE_PLANNING);
   const [updatePlanning] = useMutation(UPDATE_PLANNING);
   const [updateUser] = useMutation(UPDATE_USER);
+  const [uploadAvatar] = useMutation(UPLOAD_AVATAR);
 
   const router = useRouter();
   const [profileImage, setProfileImage] = useState(initialAvatar);
@@ -56,12 +56,19 @@ export default function ProfileComponent({ user, planning }: ProfileProps) {
     if (!validateFile(file)) return;
 
     try {
-      const data = new FormData();
-      data.set('file', file);
-      const response = await uploadAvatar(data);
-
-      if (response) {
-        setProfileImage(`${baseUrl}${response.avatar_url}`);
+      const { data } = await uploadAvatar({
+        context: {
+          headers: {
+            'GraphQL-preflight': 1,
+          },
+        },
+        variables: {
+          file,
+        },
+      });
+      console.log(data);
+      if (data) {
+        setProfileImage(`${baseUrl}${data.uploadAvatar.avatar_url}`);
         toast.success('Avatar atualizado com sucesso!');
       }
     } catch (error: any) {
