@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.10.0",
     "@tanstack/react-query": "^5.64.2",
+    "apollo-upload-client": "^18.0.1",
     "axios": "^1.7.9",
     "cookies-next": "^5.1.0",
     "jwt-decode": "^4.0.0",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/apollo-upload-client": "^18.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
