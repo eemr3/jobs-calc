@@ -3,7 +3,11 @@ import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 import { getToken } from '../../libs/getToken';
 import { setContext } from '@apollo/client/link/context';
 
-const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/graphql`;
+// const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/graphql`;
+const baseUrl =
+  process.env.NEXT_PUBLIC_DEVELOPMENT === 'true'
+    ? 'http://localhost:5043/graphql'
+    : 'http://backend:8080/graphql';
 
 const uploadLink = createUploadLink({
   uri: baseUrl,

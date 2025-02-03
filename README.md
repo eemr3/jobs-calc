@@ -2,6 +2,10 @@
 
 JobsCalc é uma aplicação projetada para ajudar freelancers a calcular o custo de seus projetos e gerenciar suas tarefas. O projeto é um mono-repo que contém o frontend, o backend e a configuração necessária para integração total da aplicação.
 
+#### Obs:
+
+- Essa versão esta usando GraphQL no lugar de Rest
+
 ## Tecnologias Utilizadas
 
 - **Frontend**: [Next.js](https://nextjs.org/)
