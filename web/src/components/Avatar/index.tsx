@@ -17,7 +17,10 @@ type User = {
   avatarUrl: string;
 };
 
-const baseUrl = 'http://backend:8080';
+const baseUrl =
+  process.env.NEXT_PUBLIC_CONTAINER === 'false'
+    ? 'http://localhost:5043'
+    : 'http://localhost:8080';
 
 export function Avatar({ user }: UserProps) {
   const handleSignOut = () => {

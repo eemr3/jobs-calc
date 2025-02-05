@@ -2,7 +2,10 @@ import { cookies } from 'next/headers';
 import ProfileComponent from '../../components/Profile';
 import { SessionExpired } from '../../components/SessionExpired';
 
-const baseUrl = 'http://backend:8080';
+const baseUrl =
+  process.env.NEXT_PUBLIC_CONTAINER === 'false'
+    ? 'http://localhost:5043'
+    : 'http://localhost:8080';
 
 export default async function ProfilePage() {
   const token = (await cookies()).get('access_token');

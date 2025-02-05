@@ -5,7 +5,10 @@ interface PageProps {
   params: Promise<{ id?: string }>;
 }
 
-const baseUrl = 'http://backend:8080';
+const baseUrl =
+  process.env.NEXT_PUBLIC_CONTAINER === 'false'
+    ? 'http://localhost:5043'
+    : 'http://localhost:8080';
 
 export default async function Project({ params }: PageProps) {
   const { id } = await params;

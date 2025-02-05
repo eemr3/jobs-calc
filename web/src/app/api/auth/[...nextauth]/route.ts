@@ -17,10 +17,13 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials) return null;
-
+        const baseUrl =
+          process.env.NEXT_PUBLIC_CONTAINER === 'false'
+            ? 'http://localhost:5043'
+            : 'http://localhost:8080';
         try {
           // Faça a requisição para sua API externa
-          const response = await fetch(`http://backend:8080/api/v1/auth/login`, {
+          const response = await fetch(`${baseUrl}/api/v1/auth/login`, {
             method: 'POST',
             body: JSON.stringify(credentials),
             headers: { 'Content-Type': 'application/json' },

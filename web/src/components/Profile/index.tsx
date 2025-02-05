@@ -28,7 +28,10 @@ type User = {
 
 const initialAvatar = '/images/profile-defaul.svg';
 
-const baseUrl = 'http://backend:8080';
+const baseUrl =
+  process.env.NEXT_PUBLIC_CONTAINER === 'false'
+    ? 'http://localhost:5043'
+    : 'http://localhost:8080';
 
 export default function ProfileComponent({ user, planning }: ProfileProps) {
   const router = useRouter();
