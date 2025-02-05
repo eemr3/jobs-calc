@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { DataProps, schema } from '../../../Utils/zod-schema';
 import { Button } from '../../Button';
-import { Icon } from '../../Button/Icon';
 import { Input } from '../../Input';
+import { Icons } from '../../Icons';
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -104,7 +104,7 @@ export default function LoginForm() {
             type="submit"
             className="flex w-full justify-center rounded-md bg-orange-400 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
           >
-            {isLoading ? <Icon.Spinner /> : 'Entrar'}
+            {isLoading ? <Icons.Spinner /> : 'Entrar'}
           </Button.Root>
         </div>
       </form>

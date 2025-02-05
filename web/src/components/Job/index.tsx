@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { calculateFreeHours, countProjects } from '../../Utils/calculate';
 import { Avatar } from '../Avatar';
 import Link from 'next/link';
-import { Icon } from '../Button/Icon';
 import { deleteJob } from '../../service/api/requests';
 import toast from 'react-hot-toast';
 import { Cards } from './Cards';
+import { Icons } from '../Icons';
 
 type JobMainProps = {
   jobsData: Job[];
@@ -99,7 +99,7 @@ export function JobMain({ jobsData, planningData, user }: JobMainProps) {
                 rounded items-center hover:brightness-110 transition-al text-[#FCFDFF]"
             >
               <span className="bg-opacity-10 bg-white rounded p-0.5">
-                <Icon.Plus24 height={24} width={24} />
+                <Icons.Plus24 />
               </span>
               <p className="px-2 text-xs font-bold">Adicionar novo job</p>
             </Link>
