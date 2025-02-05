@@ -14,21 +14,23 @@ namespace JobsCalc.Api.Http.Middleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-      await _next(context);
-
-      if (context.Response.StatusCode == 401)
+      try
       {
-        context.Response.ContentType = "application/json";
-        var response = new
+        await _next(context);
+      }
+      catch (Exception)
+      {
+        if (!context.Response.HasStarted)
         {
-          StatusCode = 401,
-          Error = "Unauthorized",
-          Message = "You need to provide a valid JWT token in the header.",
-          Timestamp = DateTime.UtcNow
-        };
-
-        var jsonResponse = JsonSerializer.Serialize(response);
-        await context.Response.WriteAsync(jsonResponse);
+          context.Response.ContentType = "application/json";
+          context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+          await context.Response.WriteAsync(JsonSerializer.Serialize(new { error = "Unauthorized" }));
+        }
+        else
+        {
+          // Log the error or handle it accordingly
+          Console.WriteLine("Response has already started, cannot modify headers.");
+        }
       }
     }
   }

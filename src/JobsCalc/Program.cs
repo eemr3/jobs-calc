@@ -110,6 +110,14 @@ var app = builder.Build();
 
 app.UseMiddleware<UnauthorizedResponseMiddleware>();
 
+// Middleware para logar a origem da requisição
+app.Use(async (context, next) =>
+{
+
+    Console.WriteLine($"Request Origin: {context.Request.Headers.Origin.ToString()}");
+    await next.Invoke();
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
