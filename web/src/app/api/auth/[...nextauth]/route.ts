@@ -18,7 +18,7 @@ const handler = NextAuth({
       async authorize(credentials) {
         if (!credentials) return null;
         const baseUrl =
-          process.env.NEXT_PUBLIC_DEVELOPMENT === 'true'
+          process.env.NEXT_PUBLIC_CONTAINER === 'false'
             ? `http://localhost:5043/api/v1/auth/login`
             : `http://backend:8080/api/v1/auth/login`;
         try {

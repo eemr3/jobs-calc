@@ -21,7 +21,7 @@ import { Input } from '../Input';
 const initialAvatar = '/images/profile-defaul.svg';
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_DEVELOPMENT === 'true'
+  process.env.NEXT_PUBLIC_CONTAINER === 'false'
     ? `http://localhost:5043`
     : `http://backend:8080`;
 
