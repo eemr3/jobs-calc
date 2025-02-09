@@ -93,16 +93,43 @@ export function JobMain({ jobsData, planningData, user }: JobMainProps) {
                 text="Encerrados"
               />
             </div>
-            <Link
-              href="/project/new"
-              className="uppercase flex gap-4 bg-orange-400 h-fit px-3 py-2 
+            {planningData.planningId !== '00000000-0000-0000-0000-000000000000' ? (
+              <Link
+                href="/project/new"
+                className="uppercase flex gap-4 bg-orange-400 h-fit px-3 py-2 
                 rounded items-center hover:brightness-110 transition-al text-[#FCFDFF]"
-            >
-              <span className="bg-opacity-10 bg-white rounded p-0.5">
-                <Icons.Plus24 />
-              </span>
-              <p className="px-2 text-xs font-bold">Adicionar novo job</p>
-            </Link>
+              >
+                <span className="bg-opacity-10 bg-white rounded p-0.5">
+                  <Icons.Plus24 />
+                </span>
+                <p className="px-2 text-xs font-bold">Adicionar novo job</p>
+              </Link>
+            ) : (
+              <Link
+                href="/profile"
+                className="uppercase flex gap-4 bg-orange-400 h-fit px-3 py-2 
+              rounded items-center hover:brightness-110 transition-al text-[#FCFDFF]"
+              >
+                {' '}
+                <span className="bg-opacity-10 bg-white rounded p-0.5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                    />
+                  </svg>
+                </span>
+                <p className="px-2 text-xs font-bold">Criar seu planejamento</p>
+              </Link>
+            )}
           </Header.Summary>
         </Header.Content>
       </Header.Root>
