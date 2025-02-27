@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JobsCalc.Communication\JobsCalc.Communication.csproj" />
+  </ItemGroup>
+
 </Project>
