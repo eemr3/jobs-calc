@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace JobsCalc.Infrastructure.Configurations;
 
-public class JobConfiguration : IEntityTypeConfiguration<Job>
+public class JobConfiguration : IEntityTypeConfiguration<JobEntity>
 {
-    public void Configure(EntityTypeBuilder<Job> builder)
+    public void Configure(EntityTypeBuilder<JobEntity> builder)
     {
         builder.ToTable("jobs");
         builder.HasKey(job => job.JobId);

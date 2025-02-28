@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace JobsCalc.Domain.Entities;
 
-public class Job
+public class JobEntity
 {
     public Guid JobId { get; set; }
     public string Name { get; set; } = null!;
@@ -11,5 +11,5 @@ public class Job
     public DateTime CreatedAt { get; set; }
     public int? UserId { get; set; }
     [JsonIgnore]
-    public virtual User? User { get; set; }
+    public virtual UserEntity? User { get; set; }
 }

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace JobsCalc.Infrastructure.Configurations;
 
-public class PlanningConfiguration : IEntityTypeConfiguration<Planning>
+public class PlanningConfiguration : IEntityTypeConfiguration<PlanningEntity>
 {
-    public void Configure(EntityTypeBuilder<Planning> builder)
+    public void Configure(EntityTypeBuilder<PlanningEntity> builder)
     {
         builder.ToTable("plannings");
         builder.HasKey(pl => pl.PlanningId);

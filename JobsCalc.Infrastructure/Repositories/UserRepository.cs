@@ -15,34 +15,34 @@ public class UserRepository : IUserRepository
         _context = context;
     }
     
-    public async Task<User> RegisterUserAsync(User user)
+    public async Task<UserEntity> RegisterUserAsync(UserEntity userEntity)
     {
-        var newUser = await _context.Users.AddAsync(user);
+        var newUser = await _context.Users.AddAsync(userEntity);
         
         await _context.SaveChangesAsync();
         
         return newUser.Entity;
     }
 
-    public async Task<User?> GetUserByIdAsync(int userId)
+    public async Task<UserEntity?> GetUserByIdAsync(int userId)
     {
         var user = await _context.Users.FirstOrDefaultAsync(user => user.UserId.Equals(userId));
 
         return user;
     }
 
-    public async Task<User?> GetUserByEmailAsync(string email)
+    public async Task<UserEntity?> GetUserByEmailAsync(string email)
     {
         var user = await _context.Users.FirstOrDefaultAsync(user => user.Email.Equals(email));
         
         return user;
     }
 
-    public async Task<User?> UpdateUserAsync(User user)
+    public async Task<UserEntity?> UpdateUserAsync(UserEntity userEntity)
     {
-        _context.Users.Update(user);
+        _context.Users.Update(userEntity);
         await _context.SaveChangesAsync();
         
-        return user;
+        return userEntity;
     }
 }

@@ -3,7 +3,7 @@ using JobsCalc.Communication.DTOs.Responses;
 
 namespace JobsCalc.Domain.Interfaces;
 
-public interface IRegisterUseCase
+public interface IAuthUseCase
 {
-    public Task<UserResponse> ExecuteAsync(UserRequest request);
+  public Task<LoginResponse> SignIn(LoginRequest request);
 }

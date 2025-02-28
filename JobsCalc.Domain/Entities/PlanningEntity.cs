@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace JobsCalc.Domain.Entities;
 
-public class Planning
+public class PlanningEntity
 {
     public Guid PlanningId { get; set; }
     public decimal MonthlyBudget { get; set; }
@@ -13,5 +13,5 @@ public class Planning
     public int? UserId { get; set; }
     
     [JsonIgnore]
-    public User? User { get; set; }
+    public UserEntity? User { get; set; }
 }

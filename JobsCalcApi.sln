@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobsCalc.Application", "Job
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobsCalc.Communication", "JobsCalc.Communication\JobsCalc.Communication.csproj", "{42D6ED08-3B6E-4FAC-8E90-DD3F98BA88AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobsCalc.Common", "JobsCalc.Common\JobsCalc.Common.csproj", "{04C600F6-21BF-4138-8719-B044C5CB0A41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{42D6ED08-3B6E-4FAC-8E90-DD3F98BA88AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42D6ED08-3B6E-4FAC-8E90-DD3F98BA88AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42D6ED08-3B6E-4FAC-8E90-DD3F98BA88AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C600F6-21BF-4138-8719-B044C5CB0A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C600F6-21BF-4138-8719-B044C5CB0A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C600F6-21BF-4138-8719-B044C5CB0A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C600F6-21BF-4138-8719-B044C5CB0A41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

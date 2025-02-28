@@ -1,4 +1,4 @@
-namespace JobsCalc.Communication.DTOs;
+namespace JobsCalc.Communication.DTOs.Requests;
 
 public class UserPathRequest
 {

@@ -1,6 +1,6 @@
 namespace JobsCalc.Domain.Entities;
 
-public class User
+public class UserEntity
 {
     public int UserId { get; set; }
     public string FullName { get; set; } = null!;
@@ -8,6 +8,6 @@ public class User
     public string PasswordHash { get; set; } = null!;
     public string AvatarUrl { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
-    public Planning? Planning { get; set; }
-    public IEnumerable<Job>? Jobs { get; set; }
+    public PlanningEntity? Planning { get; set; }
+    public IEnumerable<JobEntity>? Jobs { get; set; }
 }

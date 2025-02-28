@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace JobsCalc.Infrastructure.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
         builder.ToTable("users");
         builder.HasKey(usr => usr.UserId);
@@ -17,7 +17,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(usr => usr.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         builder.HasOne(usr => usr.Planning)
-                .WithOne(pl => pl.User).HasForeignKey<Planning>(pl => pl.UserId);
+                .WithOne(pl => pl.User).HasForeignKey<PlanningEntity>(pl => pl.UserId);
 
         builder.HasMany(usr => usr.Jobs)
                 .WithOne(job => job.User).HasForeignKey(job => job.UserId)

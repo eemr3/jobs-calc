@@ -5,8 +5,8 @@ namespace JobsCalc.Domain.Interfaces;
 
 public interface IUserRepository
 {
-    public Task<User> RegisterUserAsync(User user);
-    public Task<User?> GetUserByIdAsync(int userId);
-    public Task<User?> GetUserByEmailAsync(string email);
-    public Task<User?> UpdateUserAsync(User user);
+    public Task<UserEntity> RegisterUserAsync(UserEntity userEntity);
+    public Task<UserEntity?> GetUserByIdAsync(int userId);
+    public Task<UserEntity?> GetUserByEmailAsync(string email);
+    public Task<UserEntity?> UpdateUserAsync(UserEntity userEntity);
 }

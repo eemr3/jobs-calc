@@ -5,9 +5,9 @@ namespace JobsCalc.Infrastructure.Persistence;
 
 public class ApiDbContext : DbContext
 {
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<Planning> Plannings { get; set; } = null!;
-    public DbSet<Job> Jobs { get; set; } = null!;
+    public DbSet<UserEntity> Users { get; set; } = null!;
+    public DbSet<PlanningEntity> Plannings { get; set; } = null!;
+    public DbSet<JobEntity> Jobs { get; set; } = null!;
     
     public ApiDbContext(DbContextOptions<ApiDbContext> options): base(options){}
 

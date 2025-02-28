@@ -4,7 +4,7 @@ namespace JobsCalc.Application.Exceptions;
 
 public class InvalidLoginException : JobsCalcException
 {
-    public InvalidLoginException(string message) : base("Email e/ou senha inválidos"){}
+    public InvalidLoginException() : base("Email e/ou senha inválidos"){}
 
     public override List<string> GetErrorMessages()
     {
