@@ -1,3 +1,4 @@
+using JobsCalc.Api.Filters;
 using JobsCalc.Communication.DTOs.Requests;
 using JobsCalc.Communication.DTOs.Responses;
 using JobsCalc.Domain.Interfaces;
@@ -19,9 +20,9 @@ public class UserController : ControllerBase
   [HttpPost]
   [ProducesResponseType(typeof(ErrorMessagesResponse), StatusCodes.Status409Conflict)]
   [ProducesResponseType(typeof(ErrorMessagesResponse), StatusCodes.Status400BadRequest)]
-  public IActionResult Register([FromBody] UserRequest request)
+  public async Task<IActionResult> Register([FromBody] UserRequest request)
   {
-    var user = _registerUseCase.ExecuteAsync(request);
+    var user = await _registerUseCase.ExecuteAsync(request);
     return Ok(user);
   }
 }
