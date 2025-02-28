@@ -14,12 +14,12 @@ public class AuthController : ControllerBase
   {
     _authUseCase = authUseCase;
   }
-  
+
   [HttpPost("login")]
-  public IActionResult SignIn([FromBody]LoginRequest request)
+  public async Task<IActionResult> SignIn([FromBody] LoginRequest request)
   {
-    var token = _authUseCase.SignIn(request);
-    
+    var token = await _authUseCase.Execute(request);
+
     return Ok(token);
   }
 }
