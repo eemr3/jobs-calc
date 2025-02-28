@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using JobsCalc.Communication.DTOs.Requests;
 using JobsCalc.Communication.DTOs.Responses;
-using JobsCalc.Domain.Interfaces;
+using JobsCalc.Domain.Interfaces.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +11,12 @@ namespace JobsCalc.Api.Controllers;
 [Route("api/users")]
 public class UserController : ControllerBase
 {
-  private readonly IRegisterUseCase _registerUseCase;
+  private readonly IUserRegisterUseCase _userRegisterUseCase;
   private readonly IGetUserByIdUseCase _getUserUseCase;
 
-  public UserController(IRegisterUseCase registerUseCase, IGetUserByIdUseCase getUserUseCase)
+  public UserController(IUserRegisterUseCase userRegisterUseCase, IGetUserByIdUseCase getUserUseCase)
   {
-    _registerUseCase = registerUseCase;
+    _userRegisterUseCase = userRegisterUseCase;
     _getUserUseCase = getUserUseCase;
   }
 
@@ -26,7 +26,7 @@ public class UserController : ControllerBase
   [ProducesResponseType(typeof(ErrorMessagesResponse), StatusCodes.Status400BadRequest)]
   public async Task<IActionResult> Register([FromBody] UserRequest request)
   {
-    var user = await _registerUseCase.ExecuteAsync(request);
+    var user = await _userRegisterUseCase.ExecuteAsync(request);
     return Ok(user);
   }
 

@@ -1,6 +1,6 @@
 using JobsCalc.Communication.DTOs.Requests;
 using JobsCalc.Communication.DTOs.Responses;
-using JobsCalc.Domain.Interfaces;
+using JobsCalc.Domain.Interfaces.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobsCalc.Api.Controllers;
