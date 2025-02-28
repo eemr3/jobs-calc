@@ -29,9 +29,11 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddMvc(options =>  options.Filters.Add<ExceptionFilter>());
-builder.Services.AddDbContext<ApiDbContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddMvc(options => options.Filters.Add(new ExceptionFilter()));
+
+builder.Services.AddDbContextFactory<ApiDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<RegisterUserValidator>();
