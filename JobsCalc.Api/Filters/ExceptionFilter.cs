@@ -11,7 +11,6 @@ public class ExceptionFilter : IExceptionFilter
   {
     if (context.Exception is JobsCalcException jobsCalcException)
     {
-      Console.WriteLine((int)jobsCalcException.GetStatusCode());
       context.HttpContext.Response.StatusCode = (int)jobsCalcException.GetStatusCode();
       context.Result = new ObjectResult(new ErrorMessagesResponse
       {
