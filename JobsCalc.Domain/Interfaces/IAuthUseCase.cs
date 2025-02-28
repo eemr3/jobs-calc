@@ -5,5 +5,5 @@ namespace JobsCalc.Domain.Interfaces;
 
 public interface IAuthUseCase
 {
-  public Task<LoginResponse> SignIn(LoginRequest request);
+  public Task<LoginResponse> Execute(LoginRequest request);
 }
