@@ -1,4 +1,5 @@
 using JobsCalc.Communication.DTOs.Requests;
+using JobsCalc.Communication.DTOs.Responses;
 using JobsCalc.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,10 @@ public class AuthController : ControllerBase
   }
 
   [HttpPost("login")]
-  public async Task<IActionResult> SignIn([FromBody] LoginRequest request)
+  [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(ErrorMessagesResponse), StatusCodes.Status401Unauthorized)]
+  [ProducesResponseType(typeof(ErrorMessagesResponse), StatusCodes.Status400BadRequest)]
+  public async Task<ActionResult<LoginResponse>> SignIn([FromBody] LoginRequest request)
   {
     var token = await _authUseCase.Execute(request);
 

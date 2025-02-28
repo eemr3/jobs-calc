@@ -20,6 +20,7 @@ public class ExceptionFilter : IExceptionFilter
     else
     {
       context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
       context.Result = new ObjectResult(new ErrorMessagesResponse
       {
         Errors = ["Ocorreu um erro interno!"]
