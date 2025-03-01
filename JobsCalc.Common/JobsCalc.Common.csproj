@@ -15,4 +15,8 @@
     <ProjectReference Include="..\JobsCalc.Domain\JobsCalc.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Calculators\" />
+  </ItemGroup>
+
 </Project>
