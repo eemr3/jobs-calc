@@ -36,6 +36,8 @@ public class PlanningRepository : IPlanningRepository
     await using var context = await _contextFactory.CreateDbContextAsync();
 
     context.Entry(planningEntity).State = EntityState.Detached;
+    
+    context.Plannings.Update(planningEntity);
     await context.SaveChangesAsync();
 
     return planningEntity;

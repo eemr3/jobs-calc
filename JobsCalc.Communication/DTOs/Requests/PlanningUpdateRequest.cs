@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace JobsCalc.Communication.DTOs.Requests;
 
 public class PlanningUpdateRequest
@@ -7,5 +9,7 @@ public class PlanningUpdateRequest
   public int DaysPerWeek { get; set; }
   public int HoursPerDay { get; set; }
   public int VacationPerYear { get; set; }
+  
+  [JsonIgnore]
   public int? UserId { get; set; }
 }

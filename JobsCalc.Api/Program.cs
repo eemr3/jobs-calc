@@ -1,6 +1,7 @@
 using System.Text;
 using JobsCalc.Api.Filters;
 using JobsCalc.Application.UseCases.Auth;
+using JobsCalc.Application.UseCases.Planning;
 using JobsCalc.Application.UseCases.UploadFile;
 using JobsCalc.Application.UseCases.User;
 using JobsCalc.Application.Validators;
@@ -72,6 +73,10 @@ builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
 builder.Services.AddScoped<IUserUpdateUseCase, UserUpdateUseCase>();
 builder.Services.AddScoped<IFileUploadUseCase, FileUploadUseCase>();
 builder.Services.AddScoped<IFileStorageRepository, FileStorageRepository>();
+builder.Services.AddScoped<IPlanningRepository, PlanningRepository>();
+builder.Services.AddScoped<ICreatePlanningUseCase, CreatePlanningUseCase>();
+builder.Services.AddScoped<IGetPlanningByUserUseCase, GetPlanningByUserUseCase>();
+builder.Services.AddScoped<IUpdatePlanningUseCase, UpdatePlanningUseCase>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
