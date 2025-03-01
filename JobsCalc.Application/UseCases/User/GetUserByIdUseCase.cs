@@ -1,6 +1,7 @@
 using JobsCalc.Application.Exceptions;
 using JobsCalc.Communication.DTOs.Responses;
-using JobsCalc.Domain.Interfaces;
+using JobsCalc.Domain.Interfaces.Repositories;
+using JobsCalc.Domain.Interfaces.UseCases;
 
 namespace JobsCalc.Application.UseCases.User;
 

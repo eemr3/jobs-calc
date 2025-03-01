@@ -1,6 +1,5 @@
-using JobsCalc.Communication.DTOs;
 using JobsCalc.Domain.Entities;
-using JobsCalc.Domain.Interfaces;
+using JobsCalc.Domain.Interfaces.Repositories;
 using JobsCalc.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,36 +16,36 @@ public class UserRepository : IUserRepository
 
     public async Task<UserEntity> RegisterUserAsync(UserEntity userEntity)
     {
-        using var _context = _contextFactory.CreateDbContext();
-        var newUser = await _context.Users.AddAsync(userEntity);
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var newUser = await context.Users.AddAsync(userEntity);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return newUser.Entity;
     }
 
     public async Task<UserEntity?> GetUserByIdAsync(int userId)
     {
-        using var _context = _contextFactory.CreateDbContext();
-        var user = await _context.Users.FirstOrDefaultAsync(user => user.UserId.Equals(userId));
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var user = await context.Users.FirstOrDefaultAsync(user => user.UserId.Equals(userId));
 
         return user;
     }
 
     public async Task<UserEntity?> GetUserByEmailAsync(string email)
     {
-        using var _context = _contextFactory.CreateDbContext();
-        var user = await _context.Users.FirstOrDefaultAsync(user => user.Email.Equals(email));
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var user = await context.Users.FirstOrDefaultAsync(user => user.Email.Equals(email));
 
         return user;
     }
 
     public async Task<UserEntity?> UpdateUserAsync(UserEntity userEntity)
     {
-        using var _context = _contextFactory.CreateDbContext();
-        _context.Users.Update(userEntity);
-        await _context.SaveChangesAsync();
-
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        context.Users.Update(userEntity);
+        await context.SaveChangesAsync();
+    
         return userEntity;
     }
 }

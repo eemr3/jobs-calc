@@ -2,17 +2,20 @@ using JobsCalc.Application.Exceptions;
 using JobsCalc.Communication.DTOs.Requests;
 using JobsCalc.Communication.DTOs.Responses;
 using JobsCalc.Domain.Entities;
-using JobsCalc.Domain.Interfaces;
+using JobsCalc.Domain.Interfaces.Repositories;
+using JobsCalc.Domain.Interfaces.Services;
+using JobsCalc.Domain.Interfaces.UseCases;
 
 namespace JobsCalc.Application.UseCases.Auth;
 
 public class AuthUseCase : IAuthUseCase
 {
-  private readonly IUserRepository _userRepository;
   private readonly IJwtTokenGenerator _jwtTokenGenerator;
   private readonly IPasswordHasher _passwordHasher;
+  private readonly IUserRepository _userRepository;
 
-  public AuthUseCase(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator, IPasswordHasher passwordHasher)
+  public AuthUseCase(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator,
+    IPasswordHasher passwordHasher)
   {
     _userRepository = userRepository;
     _jwtTokenGenerator = jwtTokenGenerator;
@@ -37,7 +40,8 @@ public class AuthUseCase : IAuthUseCase
     var email = request.Email.Trim().ToLower();
     var user = await _userRepository.GetUserByEmailAsync(email);
 
-    if (user is null || !_passwordHasher.VerifyHashedPassword(user.PasswordHash, request.Password)) throw new InvalidLoginException();
+    if (user is null || !_passwordHasher.VerifyHashedPassword(user.PasswordHash, request.Password))
+      throw new InvalidLoginException();
 
     return user;
   }

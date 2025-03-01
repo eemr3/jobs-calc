@@ -11,13 +11,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\JobsCalc.Application\JobsCalc.Application.csproj" />    
     <ProjectReference Include="..\JobsCalc.Common\JobsCalc.Common.csproj" />    
     <ProjectReference Include="..\JobsCalc.Infrastructure\JobsCalc.Infrastructure.csproj" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="upload\avatar\" />
   </ItemGroup>
 
 </Project>
