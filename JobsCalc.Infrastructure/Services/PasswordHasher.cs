@@ -1,4 +1,4 @@
-using JobsCalc.Domain.Interfaces;
+using JobsCalc.Domain.Interfaces.Services;
 
 namespace JobsCalc.Infrastructure.Services;
 

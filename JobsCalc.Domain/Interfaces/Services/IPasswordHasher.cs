@@ -1,4 +1,4 @@
-namespace JobsCalc.Domain.Interfaces;
+namespace JobsCalc.Domain.Interfaces.Services;
 
 public interface IPasswordHasher
 {

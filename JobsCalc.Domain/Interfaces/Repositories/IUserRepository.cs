@@ -1,7 +1,7 @@
 using JobsCalc.Communication.DTOs;
 using JobsCalc.Domain.Entities;
 
-namespace JobsCalc.Domain.Interfaces;
+namespace JobsCalc.Domain.Interfaces.Repositories;
 
 public interface IUserRepository
 {

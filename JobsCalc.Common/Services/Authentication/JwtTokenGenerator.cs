@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using JobsCalc.Domain.Interfaces;
+using JobsCalc.Domain.Interfaces.Services;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JobsCalc.Common.Services.Authentication;
