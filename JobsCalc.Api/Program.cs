@@ -1,6 +1,7 @@
 using System.Text;
 using JobsCalc.Api.Filters;
 using JobsCalc.Application.UseCases.Auth;
+using JobsCalc.Application.UseCases.Job;
 using JobsCalc.Application.UseCases.Planning;
 using JobsCalc.Application.UseCases.UploadFile;
 using JobsCalc.Application.UseCases.User;
@@ -77,6 +78,12 @@ builder.Services.AddScoped<IPlanningRepository, PlanningRepository>();
 builder.Services.AddScoped<ICreatePlanningUseCase, CreatePlanningUseCase>();
 builder.Services.AddScoped<IGetPlanningByUserUseCase, GetPlanningByUserUseCase>();
 builder.Services.AddScoped<IUpdatePlanningUseCase, UpdatePlanningUseCase>();
+builder.Services.AddScoped<IJobRepository, JobRepository>();
+builder.Services.AddScoped<ICreateJobUseCase, CreateJobUseCase>();
+builder.Services.AddScoped<IGetJobsByUserUseCase, GetJobsByUserUseCase>();
+builder.Services.AddScoped<IGetJobByIdUseCase, GetJobByIdUseCase>();
+builder.Services.AddScoped<IUpdateJobUseCase, UpdateJobUseCase>();
+builder.Services.AddScoped<IDeleteJobUseCase, DeleteJobUseCase>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
