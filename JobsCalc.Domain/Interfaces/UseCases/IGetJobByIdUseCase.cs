@@ -1,9 +1,10 @@
 using JobsCalc.Communication.DTOs.Requests;
 using JobsCalc.Communication.DTOs.Responses;
+using JobsCalc.Domain.Entities;
 
 namespace JobsCalc.Domain.Interfaces.UseCases;
 
-public interface IGetJobUseCase
+public interface IGetJobByIdUseCase
 {
-  public Task<JobResponse> Execute(string jobId);
+  public Task<JobEntity> Execute(string jobId);
 }
