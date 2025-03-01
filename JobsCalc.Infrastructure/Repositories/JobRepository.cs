@@ -19,7 +19,7 @@ public class JobRepository : IJobRepository
   {
     await using var context = await _dbContextFactory.CreateDbContextAsync();
     var job = await context.Jobs.AddAsync(request);
-    
+
     await context.SaveChangesAsync();
     
     return job.Entity;
@@ -46,7 +46,7 @@ public class JobRepository : IJobRepository
     return job;
   }
   
-  public async Task<JobEntity> UpdateJob(string jobId, JobEntity request)
+  public async Task<JobEntity> UpdateJob(JobEntity request)
   {
     await using var context = await _dbContextFactory.CreateDbContextAsync();
 
