@@ -5,5 +5,5 @@ namespace JobsCalc.Domain.Interfaces.UseCases;
 
 public interface ICreatePlanningUseCase
 {
-  public Task<PlanningEntity> AddPlanningAsync(int userId, PlanningRequest request);
+  public Task<PlanningEntity> Execute(int userId, PlanningRequest request);
 }

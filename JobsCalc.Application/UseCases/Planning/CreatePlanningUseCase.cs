@@ -16,7 +16,7 @@ public class CreatePlanningUseCase : ICreatePlanningUseCase
     _planningRepository = planningRepository;
   }
   
-  public async Task<PlanningEntity> AddPlanningAsync(int userId, PlanningRequest request)
+  public async Task<PlanningEntity> Execute(int userId, PlanningRequest request)
   {
     var planning = await  _planningRepository.GetPlanningByUserIdAsync(userId);
 
